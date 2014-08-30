@@ -11,9 +11,9 @@ from the Copenhagen commune.
 
 # todo
 
-[] define a better indexing metric
-[] implement interactivity
-[] make web app
+* define a better indexing metric
+* implement interactivity
+* make web app
 
 # usage
 
