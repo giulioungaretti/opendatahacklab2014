@@ -27,7 +27,7 @@
 </head>
 <body>
 
-        <div id="map" style="width: 1600px; height: 1000px"></div>
+        <div id="map" style="width: 1300px; height: 1300px"></div>
 
 <script>
 
@@ -48,7 +48,7 @@ function makeMap(error, data_1,gjson_1) {
 
     
     var color = d3.scale.threshold()
-              .domain([0, 800.0, 7000.0, 10000.0, 20000.0])
+              .domain([0, 40.0, 40.0, 40.0, 40.0])
               .range(['#FFFFCC', '#C7E9B4', '#7FCDBB', '#41B6C4', '#1D91C0', '#225EA8']);
     
 
@@ -89,7 +89,7 @@ function makeMap(error, data_1,gjson_1) {
     legend.addTo(map);
 
     var x = d3.scale.linear()
-    .domain([0, 22000])
+    .domain([0, 44])
     .range([0, 400]);
 
     var xAxis = d3.svg.axis()
