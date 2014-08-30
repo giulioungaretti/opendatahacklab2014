@@ -27,7 +27,7 @@
 </head>
 <body>
 
-        <div id="map" style="width: 700px; height: 700px"></div>
+        <div id="map" style="width: 1600px; height: 1000px"></div>
 
 <script>
 
@@ -48,11 +48,11 @@ function makeMap(error, data_1,gjson_1) {
 
     
     var color = d3.scale.threshold()
-              .domain([0, 1.0, 2.0, 4.0, 4.0])
+              .domain([0, 800.0, 7000.0, 10000.0, 20000.0])
               .range(['#FFFFCC', '#C7E9B4', '#7FCDBB', '#41B6C4', '#1D91C0', '#225EA8']);
     
 
-    var map = L.map('map').setView([56.3, 11], 7);
+    var map = L.map('map').setView([55.6181, 12.6561], 12);
 
     L.tileLayer('http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.jpg', {
         maxZoom: 18,
@@ -89,7 +89,7 @@ function makeMap(error, data_1,gjson_1) {
     legend.addTo(map);
 
     var x = d3.scale.linear()
-    .domain([0, 4])
+    .domain([0, 22000])
     .range([0, 400]);
 
     var xAxis = d3.svg.axis()
@@ -124,7 +124,7 @@ function makeMap(error, data_1,gjson_1) {
     g.call(xAxis).append("text")
         .attr("class", "caption")
         .attr("y", 21)
-        .text('Total Number of users in January  2014');
+        .text('trafficcounts');
     
 
 };
