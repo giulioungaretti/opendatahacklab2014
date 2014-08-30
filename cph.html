@@ -27,15 +27,16 @@
 </head>
 <body>
 
-        <div id="map" style="width: 960px; height: 500px"></div>
+        <div id="map" style="width: 700px; height: 700px"></div>
 
 <script>
 
 queue()
-    .defer(d3.json, './data/taxzone.json')
+    .defer(d3.json, 'test.json')
+    .defer(d3.json, 'data/taxzone.json')
     .await(makeMap)
 
-function makeMap(error, gjson_1) {
+function makeMap(error, data_1,gjson_1) {
 
     
 
@@ -46,12 +47,16 @@ function makeMap(error, gjson_1) {
     };
 
     
+    var color = d3.scale.threshold()
+              .domain([0, 1.0, 2.0, 4.0, 4.0])
+              .range(['#FFFFCC', '#C7E9B4', '#7FCDBB', '#41B6C4', '#1D91C0', '#225EA8']);
+    
 
-    var map = L.map('map').setView([55.6761, 12.5683], 10);
+    var map = L.map('map').setView([56.3, 11], 7);
 
-    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    L.tileLayer('http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.jpg', {
         maxZoom: 18,
-        attribution: 'Map data (c) <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+        attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.'
     }).addTo(map);
 
     
@@ -63,11 +68,11 @@ function makeMap(error, gjson_1) {
     
     function style_1(feature) {
     return {
-        fillColor: 'blue',
+        fillColor: color(matchKey(feature.properties.id, data_1)),
         weight: 1,
-        opacity: 1,
+        opacity: 0.3,
         color: 'black',
-        fillOpacity: 0.6
+        fillOpacity: 0.8
     };
 }
     
@@ -76,6 +81,50 @@ function makeMap(error, gjson_1) {
     gJson_layer_1 = L.geoJson(gjson_1, {style: style_1}).addTo(map)
     
 
+    
+        var legend = L.control({position: 'topright'});
+
+    legend.onAdd = function (map) {var div = L.DomUtil.create('div', 'legend'); return div};
+
+    legend.addTo(map);
+
+    var x = d3.scale.linear()
+    .domain([0, 4])
+    .range([0, 400]);
+
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("top")
+        .tickSize(1)
+        .tickValues(color.domain())
+
+    var svg = d3.select(".legend.leaflet-control").append("svg")
+        .attr("id", 'legend')
+        .attr("width", 450)
+        .attr("height", 40);
+
+    var g = svg.append("g")
+        .attr("class", "key")
+        .attr("transform", "translate(25,16)");
+
+    g.selectAll("rect")
+        .data(color.range().map(function(d, i) {
+          return {
+            x0: i ? x(color.domain()[i - 1]) : x.range()[0],
+            x1: i < color.domain().length ? x(color.domain()[i]) : x.range()[1],
+            z: d
+          };
+        }))
+      .enter().append("rect")
+        .attr("height", 10)
+        .attr("x", function(d) { return d.x0; })
+        .attr("width", function(d) { return d.x1 - d.x0; })
+        .style("fill", function(d) { return d.z; });
+
+    g.call(xAxis).append("text")
+        .attr("class", "caption")
+        .attr("y", 21)
+        .text('Total Number of users in January  2014');
     
 
 };
