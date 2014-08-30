@@ -1,4 +1,4 @@
-[opendatahacklab2014
+opendatahacklab2014
 ===================
 
 opendata hacklab 2014 live from made festival
