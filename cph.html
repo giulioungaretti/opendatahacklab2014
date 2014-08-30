@@ -48,8 +48,8 @@ function makeMap(error, data_1,gjson_1) {
 
     
     var color = d3.scale.threshold()
-              .domain([0, 1, 2, 3, 4, 5.0])
-              .range(['#FFFFCC', '#C7E9B4', '#7FCDBB', '#41B6C4', '#1D91C0', '#225EA8', '#0C2C84']);
+              .domain([0, 7.0, 40.0, 70.0, 300.0])
+              .range(['#FFFFCC', '#C7E9B4', '#7FCDBB', '#41B6C4', '#1D91C0', '#225EA8']);
     
 
     var map = L.map('map').setView([55.6181, 12.6561], 12);
@@ -89,7 +89,7 @@ function makeMap(error, data_1,gjson_1) {
     legend.addTo(map);
 
     var x = d3.scale.linear()
-    .domain([0, 5])
+    .domain([0, 330])
     .range([0, 400]);
 
     var xAxis = d3.svg.axis()
