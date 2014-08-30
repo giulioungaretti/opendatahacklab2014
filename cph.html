@@ -48,7 +48,7 @@ function makeMap(error, data_1,gjson_1) {
 
     
     var color = d3.scale.threshold()
-              .domain([0, 1.0, 2.0, 4.0, 4.0])
+              .domain([0, 2000.0, 10000.0, 20000.0, 30000.0])
               .range(['#FFFFCC', '#C7E9B4', '#7FCDBB', '#41B6C4', '#1D91C0', '#225EA8']);
     
 
@@ -89,7 +89,7 @@ function makeMap(error, data_1,gjson_1) {
     legend.addTo(map);
 
     var x = d3.scale.linear()
-    .domain([0, 4])
+    .domain([0, 33000])
     .range([0, 400]);
 
     var xAxis = d3.svg.axis()
