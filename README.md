@@ -9,6 +9,12 @@ livability index in Copenhagen  created by aggregating various open data sources
 from the Copenhagen commune.
 
 
-# notebooks
+# todo
 
-[1](http://nbviewer.ipython.org/github/giulioungaretti/opendatahacklab2014/blob/master/GPA.ipynb)
+[] define a better indexing metric
+[] implement interactivity
+[] make web app
+
+# usage
+
+todo
