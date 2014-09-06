@@ -1,5 +1,5 @@
 // create the leaflet map, centered in the center of dk
-var map = L.map('map').setView([55.6181, 12.6561], 12);
+var map = L.map('map').setView([55.675, 12.5561], 12);
 
 L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
     maxZoom: 15,
@@ -142,11 +142,8 @@ function map_me(map, data) {
             });
             return val
         }
-        if (typeof maybeObject != "undefined") {
-        map.removeLayer(geojson)
-        console.log("remove layer")
-        }
-    geojson = L.geoJson(gjson_1, {
+
+        geojson = L.geoJson(gjson_1, {
             style: style_1,
             onEachFeature: onEachFeature
         }).addTo(map);
@@ -170,6 +167,12 @@ function get_dealer_map(e) {
     dealer = e.srcElement.value
     var data = dealer + '.json'
     if (dealer) {
+        try {
+            map.removeLayer(geojson)
+        }
+        catch(err) {
+            console.log('asd')
+        }
         map_me(map, data)
     };
 };
