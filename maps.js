@@ -23,14 +23,14 @@ function color(d) {
         '#FFEDA0';
 }
 
-function color(d) {
-    return d > 1000 ? '#005a32' :
-        d > 500 ? '#238b45' :
-        d > 200 ? '#41ab5d' :
-        d > 100 ? '#74c476' :
-        d > 50 ? '#a1d99b' :
-        d > 20 ? '#c7e9c0' :
-        d > 10 ? '#e5f5e0' :
+function color(d, max) {
+    return d/max > 1 ? '#005a32' :
+        d/max > 0.85 ? '#238b45' :
+        d/max > 0.7 ? '#41ab5d' :
+        d/max > 0.55 ? '#74c476' :
+        d/max > 0.4 ? '#a1d99b' :
+        d/max > 0.25 ? '#c7e9c0' :
+        d/max > 0.1 ? '#e5f5e0' :
         '#f7fcf5';
 }
 var geojson;
@@ -100,7 +100,7 @@ function map_me(map, data) {
                 width: 0.5,
                 dashArray: '2',
                 fillOpacity: 0.7,
-                fillColor: color(matchKey(feature.properties.id, data_1))
+                fillColor: color(matchKey(feature.properties.id, data_1), max)
             };
         };
 
@@ -165,7 +165,7 @@ function map_me(map, data) {
 
 function get_dealer_map(e) {
     dealer = e.srcElement.value
-    var data = 'data/' + dealer + '.json'
+    var data = 'data/' + dealer + '_data.json'
     if (dealer) {
         try {
             map.removeLayer(geojson)
