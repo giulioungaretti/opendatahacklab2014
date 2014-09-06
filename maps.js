@@ -165,7 +165,7 @@ function map_me(map, data) {
 
 function get_dealer_map(e) {
     dealer = e.srcElement.value
-    var data = tes.json
+    var data = dealer + '.json'
     if (dealer) {
         map_me(map, data)
     };
