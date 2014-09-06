@@ -23,14 +23,14 @@ function color(d) {
         '#FFEDA0';
 }
 
-function color(d, max) {
-    return d/max > 1 ? '#005a32' :
-        d/max > 0.85 ? '#238b45' :
-        d/max > 0.7 ? '#41ab5d' :
-        d/max > 0.55 ? '#74c476' :
-        d/max > 0.4 ? '#a1d99b' :
-        d/max > 0.25 ? '#c7e9c0' :
-        d/max > 0.1 ? '#e5f5e0' :
+function color(d) {
+    return d > 1 ? '#005a32' :
+        d > 0.85 ? '#238b45' :
+        d > 0.7 ? '#41ab5d' :
+        d > 0.55 ? '#74c476' :
+        d > 0.4 ? '#a1d99b' :
+        d > 0.25 ? '#c7e9c0' :
+        d > 0.1 ? '#e5f5e0' :
         '#f7fcf5';
 }
 var geojson;
@@ -57,7 +57,7 @@ var legend = L.control({
 legend.onAdd = function(map) {
 
     var div = L.DomUtil.create('div', 'info legend'),
-        grades = [0, 10, 20, 50, 100, 200, 500, 1000],
+        grades = [0, 0.1, 0.25, 0.4, 0.55, 0.7, 0.85, 1],
         labels = [],
         from, to;
 
@@ -66,7 +66,7 @@ legend.onAdd = function(map) {
         to = grades[i + 1];
 
         labels.push(
-            '<i style="background:' + color(from + 1) + '"></i> ' +
+            '<i style="background:' + color(from) + '"></i> ' +
             from + (to ? '&ndash;' + to : '+'));
     }
 
@@ -100,7 +100,7 @@ function map_me(map, data) {
                 width: 0.5,
                 dashArray: '2',
                 fillOpacity: 0.7,
-                fillColor: color(matchKey(feature.properties.id, data_1), max)
+                fillColor: color(matchKey(feature.properties.id, data_1)/max)
             };
         };
 
