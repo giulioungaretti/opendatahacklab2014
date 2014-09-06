@@ -39,8 +39,27 @@ html, body {
   float: left;
   border: solid 1px #aaa;
 }
+
 #selectTemplate{
-    position:fixed;
-    bottom:10px;
-    left:10px;
+  position:fixed;
+  bottom:10px;
+  left:10px;
+}
+
+.sliders {
+  width: 150px;
+  position:fixed;
+  bottom:50px;
+  left:10px;
+  padding: 6px 8px;
+  font: 14px/16px Arial, Helvetica, sans-serif;
+  background: white;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.h2 {
+  font-size: 1.2em;
+  margin: 60px 0 5px 0;
 }
