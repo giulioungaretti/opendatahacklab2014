@@ -85,7 +85,7 @@ function map_me(map, data) {
     .defer(d3.json, 'data/taxzone.json')
     .await(makeMap)
     function makeMap(error, data_1, gjson_1) {
-    var max = d3.max(d3.values(data_1[0]));
+    var max = 2*d3.mean(d3.values(data_1[0]));
     console.log(max)
         function matchKey(datapoint, key_variable) {
             //  gets the value by matching the zip code
