@@ -5,10 +5,9 @@ L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
     maxZoom: 15,
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
         '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-        'Imagery &copy; <a href="http://mapbox.com">Mapbox</a>-' + 'Data  &copy; eTilbudsavis.',
+        'Imagery &copy; <a href="http://mapbox.com">Mapbox</a>-',
     id: 'examples.map-20v6611k'
 }).addTo(map);
-
 
 select = document.getElementById("dropdown")
 
@@ -84,13 +83,13 @@ function map_me(map, data) {
     //  load map
     .defer(d3.json, 'data/taxzone.json')
     .await(makeMap)
+
     function makeMap(error, data_1, gjson_1) {
 
         function matchKey(datapoint, key_variable) {
             //  gets the value by matching the zip code
             return (parseFloat(key_variable[0][datapoint]));
         };
-
 
 
         function style_1(feature) {
@@ -101,7 +100,7 @@ function map_me(map, data) {
                 width: 0.5,
                 dashArray: '2',
                 fillOpacity: 0.7,
-                fillColor: color(matchKey(feature.properties.POSTNR, data_1))
+                fillColor: color(matchKey(feature.properties.id, data_1))
             };
         };
 
@@ -135,7 +134,7 @@ function map_me(map, data) {
         }
 
         function onEachFeature(feature, layer) {
-            val = matchKey(feature.properties.POSTNR, data_1);
+            val = matchKey(feature.properties.id, data_1);
             layer.on({
                 mouseover: highlightFeature,
                 mouseout: resetHighlight,
@@ -153,12 +152,12 @@ function map_me(map, data) {
         info.update = function(props) {
             if (props) {
                 //If value exists…
-                val = matchKey(props.POSTNR, data_1);
+                val = matchKey(props.id, data_1);
             } else {
                 val = 0
             }
             this._div.innerHTML = '<h4>' + dealer + '</h4>' + '<b>' + val + '</b> unique views per post number in: ' + (props ?
-                '<b>' + props.POSTNAVN + '.' : 'Hover over a state');
+                '<b>' + props.rodenavn + '.' : 'Hover over a state');
         };
 
     };
@@ -166,7 +165,7 @@ function map_me(map, data) {
 
 function get_dealer_map(e) {
     dealer = e.srcElement.value
-    var data = 'data/' + dealer + '_data.json'
+    var data = tes.json
     if (dealer) {
         map_me(map, data)
     };
