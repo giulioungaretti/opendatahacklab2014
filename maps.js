@@ -194,6 +194,4 @@ d3.select('#slider2').call(d3.slider().on("slide", function(evt, value) {
 d3.select('#slider3').call(d3.slider().on("slide", function(evt, value) {
     console.log(value)
 }));
-d3.select('#slider3').call(d3.slider().on("slide", function(evt, value) {
-    console.log(value)
-}));
+
