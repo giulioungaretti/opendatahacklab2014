@@ -59,7 +59,6 @@ html, body {
   border-radius: 4px;
 }
 
-.h2 {
-  font-size: 1.2em;
-  margin: 60px 0 5px 0;
+.sliders h2 {
+  font: 14px/16px Helvetica, Arial, sans-serif;
 }
