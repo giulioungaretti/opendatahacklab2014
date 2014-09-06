@@ -142,8 +142,11 @@ function map_me(map, data) {
             });
             return val
         }
-
-        geojson = L.geoJson(gjson_1, {
+        if (typeof maybeObject != "undefined") {
+        map.removeLayer(geojson)
+        console.log("remove layer")
+        }
+    geojson = L.geoJson(gjson_1, {
             style: style_1,
             onEachFeature: onEachFeature
         }).addTo(map);
