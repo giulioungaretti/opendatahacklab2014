@@ -2,7 +2,7 @@
 var map = L.map('map').setView([55.675, 12.5561], 12);
 
 L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
-    maxZoom: 15,
+    maxZoom: 18,
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
         '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
         'Imagery &copy; <a href="http://mapbox.com">Mapbox</a>-',
@@ -14,27 +14,27 @@ select = document.getElementById("dropdown")
 // get color depending on population density value
 function color(d) {
     //reds
-    return d > 1000 ? '#800026' :
-        d > 500 ? '#BD0026' :
-        d > 200 ? '#E31A1C' :
-        d > 100 ? '#FC4E2A' :
-        d > 50 ? '#FD8D3C' :
-        d > 20 ? '#FEB24C' :
-        d > 10 ? '#FED976' :
+    return d > 2 ? '#800026' :
+        d > 1.8 ? '#BD0026' :
+        d > 1.5 ? '#E31A1C' :
+        d > 1 ? '#FC4E2A' :
+        d > .8 ? '#FD8D3C' :
+        d > .7 ? '#FEB24C' :
+        d > 0.1 ? '#FED976' :
         '#FFEDA0';
 }
 
-function color(d) {
-    //greeens
-    return d > 1 ? '#005a32' :
-        d > 0.85 ? '#238b45' :
-        d > 0.7 ? '#41ab5d' :
-        d > 0.55 ? '#74c476' :
-        d > 0.4 ? '#a1d99b' :
-        d > 0.25 ? '#c7e9c0' :
-        d > 0.1 ? '#e5f5e0' :
-        '#f7fcf5';
-}
+// function color(d) {
+//     //greeens
+//     return d > 1 ? '#005a32' :
+//         d > 0.85 ? '#238b45' :
+//         d > 0.7 ? '#41ab5d' :
+//         d > 0.55 ? '#74c476' :
+//         d > 0.4 ? '#a1d99b' :
+//         d > 0.25 ? '#c7e9c0' :
+//         d > 0.1 ? '#e5f5e0' :
+//         '#f7fcf5';
+// }
 
 var geojson;
 var info = L.control();
@@ -61,7 +61,7 @@ var legend = L.control({
 legend.onAdd = function(map) {
 
     var div = L.DomUtil.create('div', 'info legend'),
-        grades = [0, 0.1, 0.25, 0.4, 0.55, 0.7, 0.85, 1],
+        grades = [0, 0.1, 0.25, 0.4, 0.55, 0.7, 0.85, 2],
         labels = [],
         from, to;
 
@@ -94,7 +94,6 @@ function map_me(map, data) {
         function matchKey(datapoint, key_variable) {
             //  gets the value by matching the zip code
             // console.log(key_variable[0])
-            console.log(datapoint)
             return (parseFloat(key_variable[0][datapoint]));
         };
 
@@ -107,7 +106,7 @@ function map_me(map, data) {
                 width: 0.5,
                 dashArray: '2',
                 fillOpacity: 0.7,
-                fillColor: color(matchKey(feature.properties.id, data_1) / max)
+                fillColor: color(matchKey(feature.properties.id, data_1) )
             };
         };
 
@@ -163,7 +162,7 @@ function map_me(map, data) {
             } else {
                 val = 0
             }
-            this._div.innerHTML = '<h4>' + dealer + '</h4>' + '<b>' + val + '</b> unique views per post number in: ' + (props ?
+            this._div.innerHTML = '<h4>' + dataset + '</h4>' + '<b>' + val + '</b> unique views per post number in: ' + (props ?
                 '<b>' + props.rodenavn + '.' : 'Hover over a state');
         };
 
