@@ -62,6 +62,24 @@ def writeIndex(map_data, field_name, maximize=True):
     toJson(field_name, pd.DataFrame({'id': ids, 'counts': index}))
 
 
+def writeTotalIndex(map_data):
+    """
+    Calculates an index for 'field_name' per tax zone and write to
+    """
+    ids = map_data['id']
+    index = [0.0] * len(ids)
+
+    colnames = ['cars', 'bikes', 'ages', 'parking', 'male_singles',
+                'female_singles', 'digging', 'freeparking']
+    weights = [-0.5, 0.5, 0.1, -0.5, 1.0, 1.0, -1.0, 0.25]
+    for colname, weight in zip(colnames, weights):
+        values = map_data[colname]
+
+        index += values * (weight / values.max())
+
+    toJson('final', pd.DataFrame({'id': ids, 'counts': index}))
+
+
 if __name__ == '__main__':
     map_data = createEmptyMapData()
 
@@ -84,3 +102,5 @@ if __name__ == '__main__':
     writeIndex(map_data, 'cars', maximize=False)
     writeIndex(map_data, 'digging', maximize=False)
     writeIndex(map_data, 'parking', maximize=False)
+
+    writeTotalIndex(map_data)
