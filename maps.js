@@ -24,17 +24,17 @@ function color(d) {
         '#FFEDA0';
 }
 
-// function color(d) {
-//     //greeens
-//     return d > 1 ? '#005a32' :
-//         d > 0.85 ? '#238b45' :
-//         d > 0.7 ? '#41ab5d' :
-//         d > 0.55 ? '#74c476' :
-//         d > 0.4 ? '#a1d99b' :
-//         d > 0.25 ? '#c7e9c0' :
-//         d > 0.1 ? '#e5f5e0' :
-//         '#f7fcf5';
-// }
+function color(d) {
+    //greeens
+    return d > 1 ? '#005a32' :
+        d > 0.85 ? '#238b45' :
+        d > 0.6 ? '#41ab5d' :
+        d > 0.52 ? '#74c476' :
+        d > 0.5 ? '#a1d99b' :
+        d > 0.27 ? '#c7e9c0' :
+        d > 0.1 ? '#e5f5e0' :
+        '#f7fcf5';
+}
 
 var geojson;
 var info = L.control();
@@ -106,7 +106,7 @@ function map_me(map, data) {
                 width: 0.5,
                 dashArray: '2',
                 fillOpacity: 0.7,
-                fillColor: color(matchKey(feature.properties.id, data_1) )
+                fillColor: color(matchKey(feature.properties.id, data_1)/max)
             };
         };
 
