@@ -183,15 +183,20 @@ select.addEventListener("change", get_dealer_map);
 
 // add d3 sider
 //value1
+
+var  val1 = 0
+var  val2 = 0
+var  val3 = 0
+
 d3.select('#slider1').call(d3.slider().on("slide", function(evt, value) {
-    console.log(value)
+    val1 = value
 }));
 //value2
 d3.select('#slider2').call(d3.slider().on("slide", function(evt, value) {
-    console.log(value)
+    val2 = value
 }));
 //value3
 d3.select('#slider3').call(d3.slider().on("slide", function(evt, value) {
-    console.log(value)
+    val3 = value
 }));
 
