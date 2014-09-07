@@ -13,6 +13,7 @@ select = document.getElementById("dropdown")
 
 // get color depending on population density value
 function color(d) {
+    //reds
     return d > 1000 ? '#800026' :
         d > 500 ? '#BD0026' :
         d > 200 ? '#E31A1C' :
@@ -24,6 +25,7 @@ function color(d) {
 }
 
 function color(d) {
+    //greeens
     return d > 1 ? '#005a32' :
         d > 0.85 ? '#238b45' :
         d > 0.7 ? '#41ab5d' :
@@ -33,6 +35,7 @@ function color(d) {
         d > 0.1 ? '#e5f5e0' :
         '#f7fcf5';
 }
+
 var geojson;
 var info = L.control();
 
@@ -83,12 +86,15 @@ function map_me(map, data) {
     .defer(d3.json, data)
     //  load map
     .defer(d3.json, 'data/taxzone.json')
-    .await(makeMap)
+        .await(makeMap)
+
     function makeMap(error, data_1, gjson_1) {
-    var max = 2*d3.mean(d3.values(data_1[0]));
-    console.log(max)
+        var max = 2 * d3.mean(d3.values(data_1[0]));
+
         function matchKey(datapoint, key_variable) {
             //  gets the value by matching the zip code
+            // console.log(key_variable[0])
+            console.log(datapoint)
             return (parseFloat(key_variable[0][datapoint]));
         };
 
@@ -101,7 +107,7 @@ function map_me(map, data) {
                 width: 0.5,
                 dashArray: '2',
                 fillOpacity: 0.7,
-                fillColor: color(matchKey(feature.properties.id, data_1)/max)
+                fillColor: color(matchKey(feature.properties.id, data_1) / max)
             };
         };
 
@@ -164,29 +170,33 @@ function map_me(map, data) {
     };
 };
 
-function get_dealer_map(e) {
-    dealer = e.srcElement.value
-    var data = 'data/' + dealer + '_data.json'
-    if (dealer) {
-        try {
-            map.removeLayer(geojson)
-        }
-        catch(err) {
-            console.log('asd')
-        }
-        map_me(map, data)
+function get_data_map(e) {
+    dataset = e.srcElement.value
+    if (dataset == "index"){
+        console.log(dataset)
+    }
+    else {
+        var data = 'data/' + dataset + '_data.json'
+        if (dataset) {
+            try {
+                map.removeLayer(geojson)
+            } catch (err) {
+                console.log('asd')
+            }
+            map_me(map, data)
+        };
     };
 };
 
-select.addEventListener("change", get_dealer_map);
-
+select.addEventListener("change", get_data_map);
 
 // add d3 sider
-//value1
 
-var  val1 = 0
-var  val2 = 0
-var  val3 = 0
+// create globals
+
+var val1 = 0
+var val2 = 0
+var val3 = 0
 
 d3.select('#slider1').call(d3.slider().on("slide", function(evt, value) {
     val1 = value
@@ -199,4 +209,3 @@ d3.select('#slider2').call(d3.slider().on("slide", function(evt, value) {
 d3.select('#slider3').call(d3.slider().on("slide", function(evt, value) {
     val3 = value
 }));
-
