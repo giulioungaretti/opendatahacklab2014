@@ -2,6 +2,7 @@
 import json
 import pandas as pd
 from shapely.geometry import shape, Point
+from convert import toJson
 
 
 def createEmptyMapData():
@@ -48,8 +49,17 @@ def addJsonFileToMapData(json_file, field_name, map_data, single_point_per_zone=
     return map_data
 
 
-def createIndex(map_data):
-    return map_data
+def writeIndex(map_data, field_name, maximize=True):
+    """
+    Calculates an index for 'field_name' per tax zone and write to
+    """
+    ids = map_data['id']
+    values = map_data[field_name]
+
+    nominal_weight = 1.0 if maximize else -1.0
+    index = values / (nominal_weight * values.max())
+
+    toJson(field_name, pd.DataFrame({'id': ids, 'counts': index}))
 
 
 if __name__ == '__main__':
@@ -63,5 +73,14 @@ if __name__ == '__main__':
     map_data = addJsonFileToMapData('data/female_singles.json', 'female_singles', map_data, True)
     map_data = addJsonFileToMapData('data/digging.json', 'digging', map_data)
     map_data = addJsonFileToMapData('data/poi.json', 'poi', map_data)
+    map_data = addJsonFileToMapData('data/free_parking_places.json', 'freeparking', map_data)
 
-    map_index = createIndex(map_data)
+    writeIndex(map_data, 'bikes')
+    writeIndex(map_data, 'ages')
+    writeIndex(map_data, 'male_singles')
+    writeIndex(map_data, 'female_singles')
+    writeIndex(map_data, 'poi')
+    writeIndex(map_data, 'freeparking')
+    writeIndex(map_data, 'cars', maximize=False)
+    writeIndex(map_data, 'digging', maximize=False)
+    writeIndex(map_data, 'parking', maximize=False)
