@@ -175,7 +175,7 @@ function get_data_map(e) {
         console.log(dataset)
     }
     else {
-        var data = 'data/' + dataset + '_data.json'
+        var data = 'data/' + dataset + '_index.json'
         if (dataset) {
             try {
                 map.removeLayer(geojson)
