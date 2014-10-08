@@ -9,7 +9,7 @@ def createEmptyMapData():
     """
     Creates a DataFrame with polygones and IDs for all tax zones.
     """
-    with open('data/taxzone.json', 'r') as f:
+    with open('../website/data/taxzone.json', 'r') as f:
         taxzones = json.load(f)
 
     polygons_shape = [shape(feature['geometry']) for feature in taxzones['features']]
