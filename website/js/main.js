@@ -35,11 +35,10 @@ function drawMap(data, geojson) {
         max = d3.max(d3.values(data[0]));
     // set domain of color maps
     color.domain([min, max]);
-
-    // create the leaflet map, centered in the center of dk
+    // d3 loading effectxw
     d3.select(".spinner").remove().transition().delay(100)
-    var map = L.map('map').setView([56, 10], 7);
-    var url = document.URL
+    // create the leaflet map, centered in the center of dk
+    var map = L.map('map').setView([55.675, 12.5561], 12);
 
     // set domain of color maps
     var min = d3.min(d3.values(data[0])),
@@ -100,7 +99,7 @@ function drawMap(data, geojson) {
 
     function matchKey(datapoint, key_variable) {
         //  gets the value by matching the key_variable
-        //  e.g.  feature.properties.postal
+        //  e.g.  feature.properties.id
         return (parseFloat(key_variable[0][datapoint]));
     };
 
@@ -113,7 +112,7 @@ function drawMap(data, geojson) {
             width: 0.5,
             dashArray: '2',
             fillOpacity: 0.7,
-            fillColor: color(Math.log(matchKey(feature.properties.postal, data)))
+            fillColor: color(Math.log(matchKey(feature.properties.id, data)))
         };
     };
 
@@ -146,7 +145,7 @@ function drawMap(data, geojson) {
     }
 
     function onEachFeature(feature, layer) {
-        var val = matchKey(feature.properties.postal, data);
+        var val = matchKey(feature.properties.id, data);
         layer.on({
             mouseover: highlightFeature,
             mouseout: resetHighlight,
@@ -167,7 +166,7 @@ function drawMap(data, geojson) {
     info.update = function(props) {
         if (props) {
             //If value exists…
-            var val = matchKey(props.postal, data);
+            var val = matchKey(props.id, data);
         } else {
             var val = 0
         }
@@ -178,36 +177,27 @@ function drawMap(data, geojson) {
 };
 
 //fetch data first
-select = document.getElementById("dropdown")
-select.addEventListener("change", get_data_map);
 
+dataUrl = './data/final_index.json'
 
-function get_data_map(e) {
-    dataset = e.srcElement.value
-    var dataUrl = 'data/' + dataset + '_index.json';
-    if (dataUrl) {
-        d3.json(dataUrl, function(err, data) {
-            if (err) {
-                alert("Sorry, no data");
-            } else {
-                //get map
-                d3.json("./data/taxzone.json", function(err, mapData) {
-                    if (err) {
-                        alert("Sorry, no map :(");
-                    } else {
-                        drawMap(data, mapData);
-                    }
-                })
-            }
-        });
+d3.json(dataUrl, function(err, data) {
+    if (err) {
+        alert("Sorry, no data");
     } else {
-        console.log("data url is missing");
+        //get map
+        d3.json("./data/taxzone.json", function(err, mapData) {
+            if (err) {
+                alert("Sorry, no map :(");
+            } else {
+                drawMap(data, mapData);
+            }
+        })
     }
-};
+});
 
-// add d3 sider
+// add d3 siderk
+
 // create globals
-
 var val1 = 0
 var val2 = 0
 var val3 = 0
