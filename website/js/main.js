@@ -1,12 +1,3 @@
-function getDataUrl() {
-    var h = window.location.hash;
-    if (h.length > 0) {
-        return h.substr(1);
-    }
-}
-
-
-
 //Define default colorbrewer scheme
 var colorSchemeSelect = "Greens";
 var colorScheme = colorbrewer[colorSchemeSelect];
@@ -57,21 +48,13 @@ function drawMap(data, geojson) {
     // fixing minimum number of counts to 1 to avoid problems with math
     color.domain([Math.log(1), Math.log(max)]);
 
-    //  wrap code in try statement to test locally
-    try {
-        var seconds = parseInt(url.split("Expires=")[1].split("&")[0]) * 1000
-        var date = new Date(seconds)
-    } catch (err) {
-        var date = 'date not parsed'
-    }
-
     var max = d3.max(d3.values(data[0]));
 
     // add title layer to map
     L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
         maxZoom: 15,
-        attribution: 'Aggregated 2014 Data, Expires on ' + date + '&copy; eTilbudsavis.',
-        id: 'giulio.jlndbmja'
+        attribution: 'asd',
+        id: "giulio.jnapjmgp"
     }).addTo(map);
 
     // control that shows state info on hover
@@ -174,7 +157,6 @@ function drawMap(data, geojson) {
 
 
     // plug in topojson
-    geojson = topojson.feature(geojson, geojson.objects.postnumbers_de_clean_postnumbers_dk_clean_merged);
 
     var geojsonLayer = L.geoJson(geojson, {
         style: feature_style,
@@ -190,28 +172,54 @@ function drawMap(data, geojson) {
             var val = 0
         }
         this._div.innerHTML = '<b>' + val + '</b> unique views per post number in: ' + (props ?
-            '<b>' + props.name + '.' : 'Hover over a state');
+            '<b>' + props.rodenavn + '.' : 'Hover over a state');
     };
 
 };
 
 //fetch data first
-var dataUrl = getDataUrl();
-if (dataUrl) {
-    d3.json(getDataUrl(), function(err, data) {
-        if (err) {
-            alert("Sorry, no data");
-        } else {
-            //get map
-            d3.json("./output.json", function(err, mapData) {
-                if (err) {
-                    alert("Sorry, no map :(");
-                } else {
-                    drawMap(data, mapData);
-                }
-            })
-        }
-    });
-} else {
-    console.log("data url is missing");
-}
+select = document.getElementById("dropdown")
+select.addEventListener("change", get_data_map);
+
+
+function get_data_map(e) {
+    dataset = e.srcElement.value
+    var dataUrl = 'data/' + dataset + '_index.json';
+    if (dataUrl) {
+        d3.json(dataUrl, function(err, data) {
+            if (err) {
+                alert("Sorry, no data");
+            } else {
+                //get map
+                d3.json("./data/taxzone.json", function(err, mapData) {
+                    if (err) {
+                        alert("Sorry, no map :(");
+                    } else {
+                        drawMap(data, mapData);
+                    }
+                })
+            }
+        });
+    } else {
+        console.log("data url is missing");
+    }
+};
+
+// add d3 sider
+// create globals
+
+var val1 = 0
+var val2 = 0
+var val3 = 0
+
+d3.select('#slider1').call(d3.slider().on("slide", function(evt, value) {
+    val1 = value
+}));
+//value2
+d3.select('#slider2').call(d3.slider().on("slide", function(evt, value) {
+    val2 = value
+}));
+//value3
+d3.select('#slider3').call(d3.slider().on("slide", function(evt, value) {
+    val3 = value
+}));

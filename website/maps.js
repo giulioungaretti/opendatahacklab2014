@@ -9,7 +9,6 @@ L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
     id: 'examples.map-20v6611k'
 }).addTo(map);
 
-select = document.getElementById("dropdown")
 
 // get color depending on population density value
 function color(d) {
@@ -170,12 +169,12 @@ function map_me(map, data) {
 };
 
 function get_data_map(e) {
-    dataset = e.srcElement.value
+
     if (dataset == "index"){
         console.log(dataset)
     }
     else {
-        var data = 'data/' + dataset + '_index.json'
+        var data =
         if (dataset) {
             try {
                 map.removeLayer(geojson)
@@ -190,7 +189,6 @@ function get_data_map(e) {
 select.addEventListener("change", get_data_map);
 
 // add d3 sider
-
 // create globals
 
 var val1 = 0
