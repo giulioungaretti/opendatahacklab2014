@@ -31,6 +31,8 @@ var color = d3.scale.quantile()
 
 
 function drawMap(data, geojson) {
+    console.log(d3.values(d3.values(data[0]  )))
+
     var min = d3.min(d3.values(data[0])),
         max = d3.max(d3.values(data[0]));
     // set domain of color maps
