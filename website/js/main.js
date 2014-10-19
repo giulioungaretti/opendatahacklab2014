@@ -28,15 +28,6 @@ function drawMap(data, geojson) {
     // create the leaflet map, centered in the center of dk
     var map = L.map('map').setView([55.675, 12.5561], 12);
 
-    // set domain of color maps
-    var min = d3.min(d3.values(data[0])),
-        max = d3.max(d3.values(data[0]));
-
-    // fixing minimum number of counts to 1 to avoid problems with math
-    color.domain([0, max]);
-
-    var max = d3.max(d3.values(data[0]));
-
     // add title layer to map
     L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
         maxZoom: 15,
@@ -160,7 +151,7 @@ function drawMap(data, geojson) {
 
 //fetch data first
 
-dataUrl = './data/final_index.json'
+dataUrl = './data/cars_index.json'
 
 d3.json(dataUrl, function(err, data) {
     if (err) {
