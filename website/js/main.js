@@ -9,7 +9,7 @@ var quantiles = 7;
 //It will not work if later the .domain is not specified
 var color = d3.scale.quantile().range(colorScheme[quantiles]);
 //If datapoints are negative, this needs to be initialized as
-//.range(colorScheme[quantiles].reverse()) - the range set the direction of the colorscale! 
+//.range(colorScheme[quantiles].reverse()) - the range set the direction of the colorscale!
 
 // function that matches they key of a geojson and json data file
 function matchKey(datapoint, key_variable) {
@@ -32,7 +32,7 @@ function drawMap(data, geojson) {
     color.domain([min, max]);
 
     // Checking to make sure colorscale is oriented correctly relative to the data - colorscale maps to abs(data)
-    if (min<0 && max<0) {
+    if (min < 0 && max < 0) {
         color.range().reverse()
     } else {
         color.range()
@@ -163,25 +163,13 @@ function drawMap(data, geojson) {
 var dataUrls = ['./data/cars_index.json', './data/bikes_index.json']
 
 
-for (var i = 0; i < dataUrls.length; i++) {
-        console.log(dataUrls[i])
-    };
-
-
-d3.json(dataUrl, function(err, data) {
-    if (err) {
-        alert("Sorry, no data");
-    } else {
+d3.json(dataUrls[0], function(err, data) {
         //get map
-        d3.json("./data/taxzone.json", function(err, mapData) {
-            if (err) {
-                alert("Sorry, no map :(");
-            } else {
-                drawMap(data, mapData);
-            }
-        })
+        d3.json("./data/taxzone.json", function(mapData) {
+            drawMap(data, mapData);}
+        )
     }
-});
+);
 
 // add d3 siderk
 
@@ -192,6 +180,10 @@ var val3 = 0
 
 d3.select('#slider1').call(d3.slider().on("slide", function(evt, value) {
     val1 = value
+    for (var i = 0; i < dataUrls.length; i++) {
+        console.log(dataUrls[i])
+    };
+
 
 }));
 //value2
