@@ -7,27 +7,40 @@ var quantiles = 7;
 
 //Define quantile scale to sort data values into buckets of color
 //It will not work if later the .domain is not specified
-var color = d3.scale.quantile().range(colorScheme[quantiles]);
 //If datapoints are negative, this needs to be initialized as
 //.range(colorScheme[quantiles].reverse()) - the range set the direction of the colorscale!
+var color = d3.scale
+    .quantile()
+    .range(colorScheme[quantiles]);
 
 // function that matches they key of a geojson and json data file
 function matchKey(datapoint, key_variable) {
     //  gets the value by matching the zip code
-    return (parseFloat(key_variable[0][datapoint]));
+    return (parseFloat(key_variable[datapoint]));
 }
 
-function drawMap(data, geojson) {
-    // d3 loading effect
-    d3.select(".spinner").remove().transition().delay(100)
 
-    // create the leaflet map, centered in the center of cph
-    var map = L.map('map').setView([55.675, 12.5561], 12);
+// create the leaflet map, centered in the center of cph
+var map = L.map('map').setView([55.675, 12.5561], 12);
+// add title layer to map
+L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+
+    maxZoom: 15,
+    attribution: 'asd',
+    id: "giulioungaretti.k09mbfjd"
+}).addTo(map);
+
+
+function drawMap(data, geojson) {
+
+    // d3 loading effect
+    // d3.select(".spinner").remove().transition().delay(100)
 
     // set domain of color maps
-    var min = d3.min(d3.values(data[0])),
-        max = d3.max(d3.values(data[0]));
+    var min = d3.min(d3.values(data)),
+        max = d3.max(d3.values(data));
 
+    // console.log(max)
     //  set domain of color map
     color.domain([min, max]);
 
@@ -36,14 +49,7 @@ function drawMap(data, geojson) {
         color.range().reverse()
     } else {
         color.range()
-    }
-
-    // add title layer to map
-    L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
-        maxZoom: 15,
-        attribution: 'asd',
-        id: "giulioungaretti.k09mbfjd"
-    }).addTo(map);
+    };
 
     // control that shows state info on hover
     var info = L.control();
@@ -136,14 +142,11 @@ function drawMap(data, geojson) {
         return val;
     }
 
-
     // plug in topojson
-
     var geojsonLayer = L.geoJson(geojson, {
         style: feature_style,
         onEachFeature: onEachFeature
     }).addTo(map);
-
 
     info.update = function(props) {
         if (props) {
@@ -159,38 +162,84 @@ function drawMap(data, geojson) {
 };
 
 //fetch data first
+dataUrl = "./data/complete_dataset.json"
+// dataUrl = "./data/final_index.json"
 
-var dataUrls = ['./data/cars_index.json', './data/bikes_index.json']
+
+function parse_data(data, weights) {
+    var x = new Object();
+    var y = new Object();
+    data.forEach(
+        function(d) {
+            x[d.id] = d3.values(d).slice(1,3)
+            var temp = 1
+            for (var i = 0; i < x[d.id].length; i++) {
+                temp += parseFloat(x[d.id][i]) *  parseFloat(weights[i])
+            };
+            y[d.id] = temp
+            // d.ages + d.cars  + d.bikes + d.digging  + d.poi + d.female_singles
+
+        })
+    // console.log(y)
+    return y
+}
 
 
-d3.json(dataUrls[0], function(err, data) {
-        //get map
-        d3.json("./data/taxzone.json", function(mapData) {
-            drawMap(data, mapData);}
-        )
-    }
-);
+var weights = [1,2] // , 1, 1, 1, 1, 1, 1, 1, 1]
 
-// add d3 siderk
 
-// create globals
-var val1 = 0
-var val2 = 0
-var val3 = 0
+
+// // add d3 slider
+
+// // create globals
+
+
+var names = ["#slider1"] // , "#slider1", "#slider1", "#slider1", "#slider1", "#slider1" ]
 
 d3.select('#slider1').call(d3.slider().on("slide", function(evt, value) {
-    val1 = value
-    for (var i = 0; i < dataUrls.length; i++) {
-        console.log(dataUrls[i])
-    };
+    weights[0] = value
+    d3.json(dataUrl, function(error, data ) {
+        console.log(weights)
+        if (error) {
+            console.log(error)
+        } else {
+             //get map
+            d3.json( "./data/taxzone.json", function(mapData) {
+            data = parse_data(data, weights)
+            drawMap(data, mapData);}
+            )
+        }
+    });
+    // console.log(weights  )
+}));
 
+// //value2
+// d3.select('#slider2').call(d3.slider().on("slide", function(evt, value) {
+//     val2 = value
+//     console.log(value)
+// }));
 
-}));
-//value2
-d3.select('#slider2').call(d3.slider().on("slide", function(evt, value) {
-    val2 = value
-}));
-//value3
-d3.select('#slider3').call(d3.slider().on("slide", function(evt, value) {
-    val3 = value
-}));
+// //value3
+// d3.select('#slider3').call(d3.slider().on("slide", function(evt, value) {
+//     val3 = value
+// }));
+// //value3
+// d3.select('#slider3').call(d3.slider().on("slide", function(evt, value) {
+//     val3 = value
+// }));
+// //value3
+// d3.select('#slider3').call(d3.slider().on("slide", function(evt, value) {
+//     val3 = value
+// }));
+// //value3
+// d3.select('#slider3').call(d3.slider().on("slide", function(evt, value) {
+//     val3 = value
+// }));
+// //value3
+// d3.select('#slider3').call(d3.slider().on("slide", function(evt, value) {
+//     val3 = value
+// }));
+// //value3
+// d3.select('#slider3').call(d3.slider().on("slide", function(evt, value) {
+//     val3 = value
+// }));
