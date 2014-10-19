@@ -19,6 +19,11 @@ function matchKey(datapoint, key_variable) {
     return (parseFloat(key_variable[datapoint]));
 }
 
+function matchMultiKey(datapoint, key_variable) {
+    //  gets the value by matching the zip code
+    return (key_variable[datapoint]);
+}
+
 
 // create the leaflet map, centered in the center of cph
 var map = L.map('map').setView([55.675, 12.5561], 12);
@@ -153,15 +158,96 @@ function drawMap(data, geojson, data_raw) {
             //If value exists.
             var val = matchKey(props.id, data);
             // do your magic here Henri
-            console.log(data_raw)
+            var val_array = matchMultiKey(props.id, data_raw)
+            //val_array is an array of data indices (needs to be parseFloat before usage)
+            console.log('before')
+            console.log(val_array)
         } else {
             var val = 0
+            var val_array = 0
         }
-        this._div.innerHTML = '<b>' + val + '</b> unique views per post number in: ' + (props ?
-            '<b>' + props.rodenavn + '.' : 'Hover over a state');
+        //this._div.innerHTML = '<b>' + val + '</b> unique views per post number in: ' + (props ?
+        //    '<b>' + props.rodenavn + '.' : 'Hover over a state');
+        this._div.innerHTML = radar(val_array)
     };
 
 };
+
+function radar(val1){
+RadarChart.defaultConfig.color = function() {};
+RadarChart.defaultConfig.radius = 3;
+RadarChart.defaultConfig.w = 400;
+RadarChart.defaultConfig.h = 400;
+// input
+var fuck_me = [5, 5, 0.2, 5, 5, 3, 4, 2, 4]
+//var fuck_me = data_raw
+
+console.log("here")
+console.log(val1)
+
+function wrapData(data) {
+
+    var wrappeddata = [{
+        className: 'germany', // optional can be used for styling
+        axes: [{
+            axis: "cars",
+            value: parseFloat(data[0])
+        }, {
+            axis: "bikes",
+            value: parseFloat(data[1])
+        }, {
+            axis: "ages",
+            value: parseFloat(data[2])*100
+        // }, {
+        //     axis: "parking",
+        //     value: data[3]
+        // }, {
+        //     axis: "male singles",
+        //     value: data[4]
+        // }, {
+        //     axis: "female singles",
+        //     value: data[5]
+        // }, {
+        //     axis: "digging",
+        //     value: data[6]
+        // }, {
+        //     axis: "POI",
+        //     value: data[7]
+        // }, {
+        //     axis: "free parking",
+        //     value: data[8]
+        }]
+    }];
+
+    return wrappeddata
+
+}
+
+// do the plotting
+
+//var dat = wrapData(fuck_me)
+
+var dat = wrapData(val1)
+
+// do the plotting
+var chart = RadarChart.chart();
+
+var svg = d3.select("#map").select("svg")
+    // g = svg.append("g");
+// var svg = d3.select('info').append('svg')
+//     .attr('width', 600)
+//     .attr('height', 800);
+
+// try {
+
+//     svg.selectAll('chart').remove()
+// } catch (err) {
+//                     console.log(err)
+//                 };
+
+// draw one
+svg.append('g').classed('focus', 1).datum(dat).call(chart);
+}
 
 // define data path
 dataUrl = "./data/complete_dataset.json"
@@ -172,7 +258,7 @@ function parse_data(data, weights) {
     var y = new Object();
     data.forEach(
         function(d) {
-            x[d.id] = d3.values(d).slice(1, 3)
+            x[d.id] = d3.values(d).slice(1, 4)
             var temp = 1
             for (var i = 0; i < x[d.id].length; i++) {
                 temp += parseFloat(x[d.id][i]) * parseFloat(weights[i])
@@ -186,7 +272,7 @@ function parse_data(data, weights) {
 }
 
 
-var weights = [1, 2] // , 1, 1, 1, 1, 1, 1, 1, 1]
+var weights = [1, 2, 1] // , 1, 1, 1, 1, 1, 1, 1, 1]
 
 
 var names = ["#slider1"] // , "#slider1", "#slider1", "#slider1", "#slider1", "#slider1" ]

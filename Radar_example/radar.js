@@ -3,7 +3,46 @@ RadarChart.defaultConfig.radius = 3;
 RadarChart.defaultConfig.w = 400;
 RadarChart.defaultConfig.h = 400;
 // input
-var fuck_me = [1, 2, 3, 5]
+var fuck_me = [5, 5, 0.2, 5, 5, 3, 4, 2, 4]
+
+
+function wrapData(data) {
+
+    var wrappeddata = [{
+        className: 'germany', // optional can be used for styling
+        axes: [{
+            axis: "cars",
+            value: data[0]
+        }, {
+            axis: "bikes",
+            value: data[1]
+        }, {
+            axis: "ages",
+            value: data[2]
+        }, {
+            axis: "parking",
+            value: data[3]
+        }, {
+            axis: "male singles",
+            value: data[4]
+        }, {
+            axis: "female singles",
+            value: data[5]
+        }, {
+            axis: "digging",
+            value: data[6]
+        }, {
+            axis: "POI",
+            value: data[7]
+        }, {
+            axis: "free parking",
+            value: data[8]
+        }]
+    }];
+
+    return wrappeddata
+
+}
 
 // dummy data
 var data = [{
@@ -51,6 +90,6 @@ var svg = d3.select('body').append('svg')
     .attr('width', 600)
     .attr('height', 800);
 
-
+var dat = wrapData(fuck_me)
 // draw one
-svg.append('g').classed('focus', 1).datum(data).call(chart);
+svg.append('g').classed('focus', 1).datum(dat).call(chart);
