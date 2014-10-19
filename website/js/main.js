@@ -16,20 +16,6 @@ function matchKey(datapoint, key_variable) {
     return (parseFloat(key_variable[0][datapoint]));
 }
 
-
-//Define default colorbrewer scheme
-var colorSchemeSelect = "Greens";
-var colorScheme = colorbrewer[colorSchemeSelect];
-
-//define default number of quantiles
-var quantiles = 5;
-
-//Define quantile scale to sort data values into buckets of color
-//It will not work if later the .domain is not specified
-var color = d3.scale.quantile()
-    .range(colorScheme[quantiles]);
-
-
 function drawMap(data, geojson) {
     console.log(d3.values(d3.values(data[0]  )))
 
@@ -55,7 +41,7 @@ function drawMap(data, geojson) {
     L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
         maxZoom: 15,
         attribution: 'asd',
-        id: "giulio.jnapjmgp"
+        id: "giulioungaretti.k09mbfjd"
     }).addTo(map);
 
     // control that shows state info on hover
