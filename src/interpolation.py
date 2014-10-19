@@ -49,17 +49,108 @@ def checkassigned(json_file, field_name, map_data):
 
         poly_counts.append(counts)
 
-    counts_new = interp(map_data,poly_counts)
+    counts_new = interp(map_data,poly_counts,field_name)
+
+    kde_withkernels(poly_counts)
 
     plot(map_data['poly'], poly_counts)
-    pyplot.savefig("interppre_disc.pdf")
+    pyplot.savefig("interppre_disc"+str(field_name)+".pdf")
     pyplot.show()
 
+    pyplot.hist(poly_counts)
+    pyplot.show()
     plot(map_data['poly'], counts_new)
-    pyplot.savefig("interpdone_disc.pdf")
+    pyplot.savefig("interpdone_disc_"+str(field_name)+".pdf")
     pyplot.show()
 
     return map_data
+
+
+def kde_withkernels(data):
+
+    from scipy import stats
+
+    # Draw the rug and set up the x-axis space
+
+    xx = np.linspace(np.amin(data), np.amax(data), 396)
+
+    # Compute the bandwidth of the kernel using a rule-of-thumb
+    #bandwidth = ((4 * np.std(data) ** 5) / (3 * np.shape(data)[0])) ** .2
+    #bandwidth = np.shape(data)[0] ** (-1. / 5)
+    bandwidth = (np.amax(data)-np.amin(data))/100
+
+    # We'll save the basis functions for the next step
+    kernels = []
+
+    # Plot each basis function
+    for d in data:
+
+        # Make the basis function as a gaussian PDF
+        kernel = stats.norm(d, bandwidth).pdf(xx)
+        kernels.append(kernel)
+
+        # Scale for plotting
+        kernel /= kernel.max()
+        kernel *= .4
+        pyplot.plot(xx, kernel, "#888888", alpha=.5)
+    pyplot.ylim(0, 1);
+    pyplot.show()
+
+    # This is a dumb quintiple gaussian fit
+    # import scipy.optimize
+
+    # def multi_gauss(x, *args):
+    #     m1, m2, m3, m4, m5, s1, s2, s3, s4, s5, k1, k2, k3, k4, k5 = args
+    #     ret = k1*scipy.stats.norm.pdf(x, loc=m1 ,scale=s1)
+    #     ret += k2*scipy.stats.norm.pdf(x, loc=m2 ,scale=s2)
+    #     ret += k3*scipy.stats.norm.pdf(x, loc=m3 ,scale=s3)
+    #     ret += k4*scipy.stats.norm.pdf(x, loc=m4 ,scale=s4)
+    #     ret += k5*scipy.stats.norm.pdf(x, loc=m5 ,scale=s5)
+    #     return ret
+
+
+    # params = [1,1,1, 1, 1, 1, 1, 1, 1,1,1,1,1,1,1]
+
+    # fitted_params,_ = scipy.optimize.curve_fit(multi_gauss,xx, data, p0=params)
+
+    # print fitted_params
+
+    # pyplot.plot(xx, data, 'o')
+    # pyplot.show()
+    # xxx = np.linspace(np.min(xx), np.max(xx), 1000)
+    # pyplot.plot(multi_gauss(xxx, *fitted_params),'-')
+    # pyplot.show()
+
+    # Better to use a guassian mixture model
+    # http://www.astroml.org/book_figures/chapter4/fig_GMM_1D.html
+    # http://scikit-learn.org/0.5/auto_examples/gmm/plot_gmm_pdf.html#example-gmm-plot-gmm-pdf-py
+    # http://scikit-learn.org/0.5/modules/gmm.html
+    # http://www.nehalemlabs.net/prototype/blog/2014/04/03/quick-introduction-to-gaussian-mixture-models-with-python/
+    from sklearn import mixture
+
+    def fit_samples(samples):
+        gmix = mixture.GMM(n_components=6, covariance_type='full')
+        gmix.fit(samples)
+
+        print gmix.means_
+        #colors = gmix.predict(samples)
+
+
+        logprob, responsibilities = gmix.eval(xx)
+        print responsibilities
+        pdf = np.exp(logprob)
+        pdf_individual = responsibilities * pdf[:, np.newaxis]
+
+        max_per_gauss = np.amax(pdf_individual,axis=0)
+        print max_per_gauss
+        #pyplot.plot(xx, pdf, '-k')
+        pyplot.plot(xx, pdf_individual, '--k')
+        pyplot.ylim(0,np.amin(max_per_gauss))
+        #pyplot.plot(gmix.eval(xx)[1])
+        pyplot.show()
+
+
+    fit_samples(data)
 
 # Looking for nearest neighbors won't work as we will need to reloop for each next nearest neighbor
 
@@ -76,7 +167,7 @@ def interpfail(polys,counts):
                     pass
 
 
-def interp(map_data,counts):
+def interp(map_data,counts,field_name):
     x = []
     y = []
 
@@ -112,7 +203,7 @@ def interp(map_data,counts):
     ax = pyplot.gca()
     ax.scatter(xz,yz,c="white")
     plot_boundaries(map_data['poly'],counts)
-    pyplot.savefig("interppre_cont.pdf")
+    pyplot.savefig("interppre_cont"+str(field_name)+".pdf")
     pyplot.show()
 
     #Two obvious options, either mean of all interpolated values within a polygon
@@ -147,7 +238,7 @@ def interp(map_data,counts):
 
     plot_t(x_new,y_new,counts_newa,grid2)
     plot_boundaries(map_data['poly'],counts)
-    pyplot.savefig("interpdone_cont.pdf")
+    pyplot.savefig("interpdone_cont"+str(field_name)+".pdf")
     pyplot.show()
 
     return counts_newa
@@ -236,6 +327,10 @@ def plot(polys,counts):
 
 map_data = createEmptyMapData()
 
-map_data = checkassigned('../data/trafiktal.json', 'cars', map_data)
+map_data1 = checkassigned('../data/trafiktal.json', 'cars', map_data)
+
+#map_data3 = checkassigned('../data/cykler.json', 'bikes', map_data)
+#map_data4 = checkassigned('../data/parkingdata.json', 'parking', map_data)
+
 
 #object.touches
