@@ -206,6 +206,7 @@ var val3 = 0
 
 d3.select('#slider1').call(d3.slider().on("slide", function(evt, value) {
     val1 = value
+
 }));
 //value2
 d3.select('#slider2').call(d3.slider().on("slide", function(evt, value) {
