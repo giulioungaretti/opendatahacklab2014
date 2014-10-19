@@ -47,6 +47,7 @@ function drawMap(data, geojson) {
     // control that shows state info on hover
     var info = L.control();
     info.onAdd = function(map) {
+        // maybe create the div in advance ? with explanatory text ?
         this._div = L.DomUtil.create('div', 'info');
         this._div.innerHTML = '';
         return this._div;
