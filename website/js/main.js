@@ -7,8 +7,9 @@ var quantiles = 7;
 
 //Define quantile scale to sort data values into buckets of color
 //It will not work if later the .domain is not specified
-var color = d3.scale.quantile()
-    .range(colorScheme[quantiles]);
+var color = d3.scale.quantile().range(colorScheme[quantiles]);
+//If datapoints are negative, this needs to be initialized as
+//.range(colorScheme[quantiles].reverse()) - the range set the direction of the colorscale! 
 
 // function that matches they key of a geojson and json data file
 function matchKey(datapoint, key_variable) {
@@ -28,7 +29,14 @@ function drawMap(data, geojson) {
         max = d3.max(d3.values(data[0]));
 
     //  set domain of color map
-    color.domain([0, max]);
+    color.domain([min, max]);
+
+    // Checking to make sure colorscale is oriented correctly relative to the data - colorscale maps to abs(data)
+    if (min<0 && max<0) {
+        color.range().reverse()
+    } else {
+        color.range()
+    }
 
     // add title layer to map
     L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
