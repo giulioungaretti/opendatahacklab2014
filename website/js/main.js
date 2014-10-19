@@ -3,7 +3,7 @@ var colorSchemeSelect = "Greens";
 var colorScheme = colorbrewer[colorSchemeSelect];
 
 //define default number of quantiles
-var quantiles = 5;
+var quantiles = 7;
 
 //Define quantile scale to sort data values into buckets of color
 //It will not work if later the .domain is not specified
@@ -33,7 +33,7 @@ function drawMap(data, geojson) {
         max = d3.max(d3.values(data[0]));
 
     // fixing minimum number of counts to 1 to avoid problems with math
-    color.domain([Math.log(1), Math.log(max)]);
+    color.domain([0, max]);
 
     var max = d3.max(d3.values(data[0]));
 
@@ -85,14 +85,6 @@ function drawMap(data, geojson) {
 
     // control appearance of the map
     // first specify the domain of the quantile color map
-
-    function matchKey(datapoint, key_variable) {
-        //  gets the value by matching the key_variable
-        //  e.g.  feature.properties.id
-        return (parseFloat(key_variable[0][datapoint]));
-    };
-
-
     function feature_style(feature) {
         return {
             weight: 1,
@@ -101,7 +93,7 @@ function drawMap(data, geojson) {
             width: 0.5,
             dashArray: '2',
             fillOpacity: 0.7,
-            fillColor: color(Math.log(matchKey(feature.properties.id, data)))
+            fillColor: color(matchKey(feature.properties.id, data))
         };
     };
 
@@ -120,7 +112,7 @@ function drawMap(data, geojson) {
         if (!L.Browser.ie && !L.Browser.opera) {
             layer.bringToFront();
         }
-
+        //  link target highlight and info redraw
         info.update(layer.feature.properties);
     }
 
@@ -133,6 +125,7 @@ function drawMap(data, geojson) {
         map.fitBounds(e.target.getBounds());
     }
 
+    // key-on each feature the highlight and info
     function onEachFeature(feature, layer) {
         var val = matchKey(feature.properties.id, data);
         layer.on({
@@ -154,7 +147,7 @@ function drawMap(data, geojson) {
 
     info.update = function(props) {
         if (props) {
-            //If value exists…
+            //If value exists.
             var val = matchKey(props.id, data);
         } else {
             var val = 0
