@@ -152,7 +152,13 @@ function drawMap(data, geojson) {
 
 //fetch data first
 
-dataUrl = './data/cars_index.json'
+var dataUrls = ['./data/cars_index.json', './data/bikes_index.json']
+
+
+for (var i = 0; i < dataUrls.length; i++) {
+        console.log(dataUrls[i])
+    };
+
 
 d3.json(dataUrl, function(err, data) {
     if (err) {
