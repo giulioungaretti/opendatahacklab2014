@@ -54,8 +54,8 @@ def addJsonFileToMapData(json_file, field_name, map_data, single_point_per_zone=
 
     interpolated_counts = interp(map_data,poly_counts,field_name)
 
-    pyplot.hist(interpolated_counts)
-    pyplot.show()
+    # pyplot.hist(interpolated_counts)
+    # pyplot.show()
 
     map_data = pd.merge(map_data,
                         pd.DataFrame({'poly': map_data['poly'],
@@ -149,6 +149,17 @@ def writeIndex(map_data, field_name, maximize=True):
     toJson(field_name, pd.DataFrame({'id': ids, 'counts': index}))
 
 
+def writeOnes(map_data, field_name):
+    """
+    Calculates an index for 'field_name' per tax zone and write to
+    """
+    ids = map_data['id']
+    values = map_data[field_name]
+
+    index = values / values
+
+    toJson('ones', pd.DataFrame({'id': ids, 'counts': index}))
+
 def writeTotalIndex(map_data):
     """
     Calculates an index for 'field_name' per tax zone and write to
@@ -189,5 +200,7 @@ if __name__ == '__main__':
     writeIndex(map_data, 'cars', maximize=False)
     writeIndex(map_data, 'digging', maximize=False)
     writeIndex(map_data, 'parking', maximize=False)
+
+    writeOnes(map_data, 'cars')
 
     writeTotalIndex(map_data)
