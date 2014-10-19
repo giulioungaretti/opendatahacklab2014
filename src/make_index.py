@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import sys
+
 import json
 import pandas as pd
 from shapely.geometry import shape, Point
@@ -7,6 +9,8 @@ import numpy as np
 from scipy.interpolate import Rbf
 
 from matplotlib import pyplot
+
+sys.setrecursionlimit(1500)
 
 def createEmptyMapData():
     """
@@ -148,6 +152,16 @@ def writeIndex(map_data, field_name, maximize=True):
 
     toJson(field_name, pd.DataFrame({'id': ids, 'counts': index}))
 
+def writeFullIndex(map_data):
+    """
+    Calculates an index for 'field_name' per tax zone and write to
+    """
+    print map_data.head
+    print map_data.describe()
+
+    map_data = map_data.drop('poly', 1)
+
+    map_data.to_json('concat',orient="records")
 
 def writeOnes(map_data, field_name):
     """
@@ -191,16 +205,18 @@ if __name__ == '__main__':
     map_data = addJsonFileToMapData('../data/poi.json', 'poi', map_data)
     map_data = addJsonFileToMapData('../data/free_parking_places.json', 'freeparking', map_data)
 
-    writeIndex(map_data, 'bikes')
-    writeIndex(map_data, 'ages')
-    writeIndex(map_data, 'male_singles')
-    writeIndex(map_data, 'female_singles')
-    writeIndex(map_data, 'poi')
-    writeIndex(map_data, 'freeparking')
-    writeIndex(map_data, 'cars', maximize=False)
-    writeIndex(map_data, 'digging', maximize=False)
-    writeIndex(map_data, 'parking', maximize=False)
+    # writeIndex(map_data, 'bikes')
+    # writeIndex(map_data, 'ages')
+    # writeIndex(map_data, 'male_singles')
+    # writeIndex(map_data, 'female_singles')
+    # writeIndex(map_data, 'poi')
+    # writeIndex(map_data, 'freeparking')
+    # writeIndex(map_data, 'cars', maximize=False)
+    # writeIndex(map_data, 'digging', maximize=False)
+    # writeIndex(map_data, 'parking', maximize=False)
 
-    writeOnes(map_data, 'cars')
+    # writeOnes(map_data, 'cars')
+
+    writeFullIndex(map_data)
 
     writeTotalIndex(map_data)
