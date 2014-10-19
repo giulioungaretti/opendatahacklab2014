@@ -17,25 +17,19 @@ function matchKey(datapoint, key_variable) {
 }
 
 function drawMap(data, geojson) {
-    console.log(d3.values(d3.values(data[0]  )))
-
-    var min = d3.min(d3.values(data[0])),
-        max = d3.max(d3.values(data[0]));
-    // set domain of color maps
-    color.domain([min, max]);
-    // d3 loading effectxw
+    // d3 loading effect
     d3.select(".spinner").remove().transition().delay(100)
-    // create the leaflet map, centered in the center of dk
+
+    // create the leaflet map, centered in the center of cph
     var map = L.map('map').setView([55.675, 12.5561], 12);
 
     // set domain of color maps
     var min = d3.min(d3.values(data[0])),
         max = d3.max(d3.values(data[0]));
 
-    // fixing minimum number of counts to 1 to avoid problems with math
+    //  set domain of color map
     color.domain([0, max]);
 
-    var max = d3.max(d3.values(data[0]));
 
     // add title layer to map
     L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
@@ -91,7 +85,6 @@ function drawMap(data, geojson) {
             opacity: 0.31,
             color: 'white',
             width: 0.5,
-            dashArray: '2',
             fillOpacity: 0.7,
             fillColor: color(matchKey(feature.properties.id, data))
         };
