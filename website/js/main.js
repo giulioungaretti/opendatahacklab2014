@@ -175,9 +175,11 @@ function drawMap(data, geojson, data_raw) {
 
 function radar(val1){
 RadarChart.defaultConfig.color = function() {};
-RadarChart.defaultConfig.radius = 3;
+RadarChart.defaultConfig.radius = 4;
 RadarChart.defaultConfig.w = 400;
 RadarChart.defaultConfig.h = 400;
+//RadarChart.defaultConfig.levelTick = true;
+RadarChart.defaultConfig.axisLine = true;
 // input
 var fuck_me = [5, 5, 0.2, 5, 5, 3, 4, 2, 4]
 //var fuck_me = data_raw
@@ -223,30 +225,30 @@ function wrapData(data) {
 
 }
 
-// do the plotting
-
-//var dat = wrapData(fuck_me)
-
 var dat = wrapData(val1)
 
 // do the plotting
 var chart = RadarChart.chart();
 
 var svg = d3.select("#map").select("svg")
-    // g = svg.append("g");
-// var svg = d3.select('info').append('svg')
-//     .attr('width', 600)
-//     .attr('height', 800);
 
-// try {
+// this loop removes old layers for updating
+try {
+    // this is a hack - would be easier to just remove the layer
+    svg.selectAll('polygon').remove()
+    svg.selectAll('circle').remove()
+    svg.selectAll('text').remove()
+} catch (err) {
+                    console.log(err)
+                };
 
-//     svg.selectAll('chart').remove()
-// } catch (err) {
-//                     console.log(err)
-//                 };
+// How do I give this a new group name and make it work?
+var rad_chart = svg.append('g')
+    .attr('width', 600)
+    .attr('height', 800);
 
-// draw one
-svg.append('g').classed('focus', 1).datum(dat).call(chart);
+rad_chart.classed('single', 1).datum(dat).call(chart);
+
 }
 
 // define data path
