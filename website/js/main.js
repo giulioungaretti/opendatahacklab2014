@@ -31,7 +31,8 @@ var map = L.map('map').setView([55.675, 12.5561], 12);
 L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
 
     maxZoom: 15,
-    attribution: 'asd',
+    // TODO: add proper attribution i.e mapbox, cph open data.
+    attribution: '',
     id: "giulioungaretti.k09mbfjd"
 }).addTo(map);
 
@@ -39,8 +40,6 @@ var geojsonLayer;
 
 
 function drawMap(data, geojson, data_raw) {
-    // d3 loading effect
-     d3.select(".spinner").remove().transition().delay(100)
 
     // set domain of color maps
     var min = d3.min(d3.values(data)),
@@ -170,84 +169,85 @@ function drawMap(data, geojson, data_raw) {
         //    '<b>' + props.rodenavn + '.' : 'Hover over a state');
         this._div.innerHTML = radar(val_array)
     };
-
+    // d3 loading effect
+     d3.select(".spinner").remove().transition().delay(100)
 };
 
 function radar(val1){
-RadarChart.defaultConfig.color = function() {};
-RadarChart.defaultConfig.radius = 4;
-RadarChart.defaultConfig.w = 400;
-RadarChart.defaultConfig.h = 400;
-//RadarChart.defaultConfig.levelTick = true;
-RadarChart.defaultConfig.axisLine = true;
-// input
-var fuck_me = [5, 5, 0.2, 5, 5, 3, 4, 2, 4]
-//var fuck_me = data_raw
+    RadarChart.defaultConfig.color = function() {};
+    RadarChart.defaultConfig.radius = 4;
+    RadarChart.defaultConfig.w = 400;
+    RadarChart.defaultConfig.h = 400;
+    //RadarChart.defaultConfig.levelTick = true;
+    RadarChart.defaultConfig.axisLine = true;
+    // input
+    var fuck_me = [5, 5, 0.2, 5, 5, 3, 4, 2, 4]
+    //var fuck_me = data_raw
 
-console.log("here")
-console.log(val1)
+    console.log("here")
+    console.log(val1)
 
-function wrapData(data) {
+    function wrapData(data) {
 
-    var wrappeddata = [{
-        className: 'germany', // optional can be used for styling
-        axes: [{
-            axis: "cars",
-            value: parseFloat(data[0])
-        }, {
-            axis: "bikes",
-            value: parseFloat(data[1])
-        }, {
-            axis: "ages",
-            value: parseFloat(data[2])*100
-        // }, {
-        //     axis: "parking",
-        //     value: data[3]
-        // }, {
-        //     axis: "male singles",
-        //     value: data[4]
-        // }, {
-        //     axis: "female singles",
-        //     value: data[5]
-        // }, {
-        //     axis: "digging",
-        //     value: data[6]
-        // }, {
-        //     axis: "POI",
-        //     value: data[7]
-        // }, {
-        //     axis: "free parking",
-        //     value: data[8]
-        }]
-    }];
+        var wrappeddata = [{
+            className: 'germany', // optional can be used for styling
+            axes: [{
+                axis: "cars",
+                value: parseFloat(data[0])
+            }, {
+                axis: "bikes",
+                value: parseFloat(data[1])
+            }, {
+                axis: "ages",
+                value: parseFloat(data[2])*100
+            // }, {
+            //     axis: "parking",
+            //     value: data[3]
+            // }, {
+            //     axis: "male singles",
+            //     value: data[4]
+            // }, {
+            //     axis: "female singles",
+            //     value: data[5]
+            // }, {
+            //     axis: "digging",
+            //     value: data[6]
+            // }, {
+            //     axis: "POI",
+            //     value: data[7]
+            // }, {
+            //     axis: "free parking",
+            //     value: data[8]
+            }]
+        }];
 
-    return wrappeddata
+        return wrappeddata
 
-}
+    }
 
-var dat = wrapData(val1)
+    var dat = wrapData(val1)
 
-// do the plotting
-var chart = RadarChart.chart();
+    // do the plotting
+    var chart = RadarChart.chart();
 
-var svg = d3.select("#map").select("svg")
+    var svg = d3.select("#map").select("svg")
 
-// this loop removes old layers for updating
-try {
-    // this is a hack - would be easier to just remove the layer
-    svg.selectAll('polygon').remove()
-    svg.selectAll('circle').remove()
-    svg.selectAll('text').remove()
-} catch (err) {
-                    console.log(err)
-                };
+    // this loop removes old layers for updating
+    try {
+        // this is a hack - would be easier to just remove the layer
+        svg.selectAll('polygon').remove()
+        svg.selectAll('circle').remove()
+        svg.selectAll('text').remove()
+    } catch (err) {
+                        console.log(err)
+                    };
 
-// How do I give this a new group name and make it work?
-var rad_chart = svg.append('g')
-    .attr('width', 600)
-    .attr('height', 800);
+    // How do I give this a new group name and make it work?
+    var rad_chart = svg.append('g')
+        .attr('width', 600)
+        .attr('height', 800);
 
-rad_chart.classed('single', 1).datum(dat).call(chart);
+    rad_chart.classed('single', 1).datum(dat).call(chart);
 
 }
 
