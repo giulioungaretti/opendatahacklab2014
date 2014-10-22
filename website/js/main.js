@@ -37,6 +37,15 @@ L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 var geojsonLayer;
+// info box
+var info = L.control();
+info.onAdd = function(map) {
+    // maybe create the div in advance ? with explanatory text ?
+    this._div = L.DomUtil.create('div', 'info');
+    this._div.innerHTML = '';
+    return this._div;
+};
+info.addTo(map);
 
 
 function drawMap(data, geojson, data_raw) {
@@ -57,14 +66,6 @@ function drawMap(data, geojson, data_raw) {
     };
 
     // control that shows state info on hover
-    var info = L.control();
-    info.onAdd = function(map) {
-        // maybe create the div in advance ? with explanatory text ?
-        this._div = L.DomUtil.create('div', 'info');
-        this._div.innerHTML = '';
-        return this._div;
-    };
-    info.addTo(map);
 
     // add legged
     var legend = L.control({
@@ -165,16 +166,16 @@ function drawMap(data, geojson, data_raw) {
             var val = 0
             var val_array = 0
         }
-        //this._div.innerHTML = '<b>' + val + '</b> unique views per post number in: ' + (props ?
-        //    '<b>' + props.rodenavn + '.' : 'Hover over a state');
-        this._div.innerHTML = radar(val_array)
+        this._div.innerHTML = '<b>' + val + '</b> unique views per post number in: ' + (props ?
+           '<b>' + props.rodenavn + '.' : 'Hover over a state');
+        // this._div.innerHTML = radar(val_array)
     };
     // d3 loading effect
      d3.select(".spinner").remove().transition().delay(100)
 };
 
 function radar(val1){
-    RadarChart.defaultConfig.color = function() {};
+    RadarChart.defaultConfig.color = function() {};  // ???
     RadarChart.defaultConfig.radius = 4;
     RadarChart.defaultConfig.w = 400;
     RadarChart.defaultConfig.h = 400;
