@@ -159,7 +159,7 @@ function drawMap(data, geojson, data_raw) {
             var val = matchKey(props.id, data);
             // do your magic here Henri
             var val_array = matchMultiKey(props.id, data_raw)
-            //val_array is an array of data indices (needs to be parseFloat before usage)
+                //val_array is an array of data indices (needs to be parseFloat before usage)
             console.log('before')
             console.log(val_array)
         } else {
@@ -167,29 +167,23 @@ function drawMap(data, geojson, data_raw) {
             var val_array = 0
         }
         this._div.innerHTML = '<b>' + val + '</b> unique views per post number in: ' + (props ?
-           '<b>' + props.rodenavn + '.' : 'Hover over a state');
-        // this._div.innerHTML = radar(val_array)
+            '<b>' + props.rodenavn + '.' : 'Hover over a state');
+        radar(val_array)
     };
     // d3 loading effect
-     d3.select(".spinner").remove().transition().delay(100)
+    d3.select(".spinner").remove().transition().delay(100)
 };
 
-function radar(val1){
-    RadarChart.defaultConfig.color = function() {};  // ???
-    RadarChart.defaultConfig.radius = 4;
-    RadarChart.defaultConfig.w = 400;
-    RadarChart.defaultConfig.h = 400;
-    //RadarChart.defaultConfig.levelTick = true;
-    RadarChart.defaultConfig.axisLine = true;
-    // input
-    var fuck_me = [5, 5, 0.2, 5, 5, 3, 4, 2, 4]
-    //var fuck_me = data_raw
-
-    console.log("here")
-    console.log(val1)
+function radar(val1) {
+    // initialize radara
+    var chart = RadarChart.chart();
+    chart.config({
+        containerClass: 'radar',
+        w: 100,
+        h: 100
+    });
 
     function wrapData(data) {
-
         var wrappeddata = [{
             className: 'germany', // optional can be used for styling
             axes: [{
@@ -200,55 +194,45 @@ function radar(val1){
                 value: parseFloat(data[1])
             }, {
                 axis: "ages",
-                value: parseFloat(data[2])*100
-            // }, {
-            //     axis: "parking",
-            //     value: data[3]
-            // }, {
-            //     axis: "male singles",
-            //     value: data[4]
-            // }, {
-            //     axis: "female singles",
-            //     value: data[5]
-            // }, {
-            //     axis: "digging",
-            //     value: data[6]
-            // }, {
-            //     axis: "POI",
-            //     value: data[7]
-            // }, {
-            //     axis: "free parking",
-            //     value: data[8]
+                value: parseFloat(data[2]) * 100
+                // }, {
+                //     axis: "parking",
+                //     value: data[3]
+                // }, {
+                //     axis: "male singles",
+                //     value: data[4]
+                // }, {
+                //     axis: "female singles",
+                //     value: data[5]
+                // }, {
+                //     axis: "digging",
+                //     value: data[6]
+                // }, {
+                //     axis: "POI",
+                //     value: data[7]
+                // }, {
+                //     axis: "free parking",
+                //     value: data[8]
             }]
         }];
-
         return wrappeddata
-
     }
 
     var dat = wrapData(val1)
-
-    // do the plotting
-    var chart = RadarChart.chart();
-
-    var svg = d3.select("#map").select("svg")
-
-    // this loop removes old layers for updating
+        // do the plotting
+    var svg = d3.select('.radar').append('svg');
+        // this loop removes old layers for updating
     try {
         // this is a hack - would be easier to just remove the layer
         svg.selectAll('polygon').remove()
         svg.selectAll('circle').remove()
         svg.selectAll('text').remove()
     } catch (err) {
-                        console.log(err)
-                    };
+        console.log(err)
+    };
 
-    // How do I give this a new group name and make it work?
-    var rad_chart = svg.append('g')
-        .attr('width', 600)
-        .attr('height', 800);
-
-    rad_chart.classed('single', 1).datum(dat).call(chart);
+    // draw one
+    svg.append('g').classed('focus', 1).datum(dat).call(chart);
 
 }
 
