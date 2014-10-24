@@ -65,7 +65,6 @@ function drawMap(data, geojson, data_raw) {
         color.range()
     };
 
-    // control that shows state info on hover
 
     // add legged
     var legend = L.control({
@@ -108,7 +107,6 @@ function drawMap(data, geojson, data_raw) {
             fillColor: color(matchKey(feature.properties.id, data))
         };
     };
-
 
     // insert highlight
     function highlightFeature(e) {
@@ -160,11 +158,10 @@ function drawMap(data, geojson, data_raw) {
             // do your magic here Henri
             var val_array = matchMultiKey(props.id, data_raw)
                 //val_array is an array of data indices (needs to be parseFloat before usage)
-            console.log('before')
-            console.log(val_array)
         } else {
             var val = 0
-            var val_array = 0
+                // the dimensionality must be unchanged
+            var val_array = [, , ]
         }
         this._div.innerHTML = '<b>' + val + '</b> unique views per post number in: ' + (props ?
             '<b>' + props.rodenavn + '.' : 'Hover over a state');
@@ -174,66 +171,65 @@ function drawMap(data, geojson, data_raw) {
     d3.select(".spinner").remove().transition().delay(100)
 };
 
+
+function wrapData(data) {
+    var wrappeddata = [{
+        className: 'germany', // optional can be used for styling
+        axes: [{
+            axis: "cars",
+            value: parseFloat(data[0])
+        }, {
+            axis: "bikes",
+            value: parseFloat(data[1])
+        }, {
+            axis: "ages",
+            value: parseFloat(data[2])
+            // }, {
+            //     axis: "parking",
+            //     value: data[3]
+            // }, {
+            //     axis: "male singles",
+            //     value: data[4]
+            // }, {
+            //     axis: "female singles",
+            //     value: data[5]
+            // }, {
+            //     axis: "digging",
+            //     value: data[6]
+            // }, {
+            //     axis: "POI",
+            //     value: data[7]
+            // }, {
+            //     axis: "free parking",
+            //     value: data[8]
+        }]
+    }];
+    return wrappeddata
+}
+
 function radar(val1) {
-    // initialize radara
-    var chart = RadarChart.chart();
-    chart.config({
-        containerClass: 'radar',
-        w: 100,
-        h: 100
-    });
-
-    function wrapData(data) {
-        var wrappeddata = [{
-            className: 'germany', // optional can be used for styling
-            axes: [{
-                axis: "cars",
-                value: parseFloat(data[0])
-            }, {
-                axis: "bikes",
-                value: parseFloat(data[1])
-            }, {
-                axis: "ages",
-                value: parseFloat(data[2]) * 100
-                // }, {
-                //     axis: "parking",
-                //     value: data[3]
-                // }, {
-                //     axis: "male singles",
-                //     value: data[4]
-                // }, {
-                //     axis: "female singles",
-                //     value: data[5]
-                // }, {
-                //     axis: "digging",
-                //     value: data[6]
-                // }, {
-                //     axis: "POI",
-                //     value: data[7]
-                // }, {
-                //     axis: "free parking",
-                //     value: data[8]
-            }]
-        }];
-        return wrappeddata
+    // check if value exist, if it does then plot
+    // otherwise skip
+    if (typeof val1[0] != "undefined" &&
+        typeof val1[1] != "undefined" &&
+        typeof val1[2] != "undefined"
+    ) {
+        // initialize radar
+        var chart = RadarChart.chart();
+        // initialize config
+        var cfg = chart.config()
+        .w = 150
+        .h = 150;
+        d3.select("#radar").select('svg').remove();
+        d3.select("#radar")
+            .append("svg")
+            .attr("width", cfg.w)
+            .attr("height", cfg.h)
+            .datum(wrapData(val1))
+            .call(chart);
+    } else {
+        console.log('nans')
     }
-
-    var dat = wrapData(val1)
-        // do the plotting
-    var svg = d3.select('.radar').append('svg');
-        // this loop removes old layers for updating
-    try {
-        // this is a hack - would be easier to just remove the layer
-        svg.selectAll('polygon').remove()
-        svg.selectAll('circle').remove()
-        svg.selectAll('text').remove()
-    } catch (err) {
-        console.log(err)
-    };
-
-    // draw one
-    svg.append('g').classed('focus', 1).datum(dat).call(chart);
-
 }
 
 // define data path
@@ -258,9 +254,7 @@ function parse_data(data, weights) {
     return [x, y]
 }
 
-
 var weights = [1, 2, 1] // , 1, 1, 1, 1, 1, 1, 1, 1]
-
 
 var names = ["#slider1"] // , "#slider1", "#slider1", "#slider1", "#slider1", "#slider1" ]
 
@@ -279,7 +273,6 @@ d3.select('#slider1').call(d3.slider().on("slide", function(evt, value) {
                 } catch (err) {
                     console.log(err)
                 };
-
                 drawMap(data[1], mapData, data[0]);
             })
         }
