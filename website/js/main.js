@@ -24,7 +24,6 @@ function matchMultiKey(datapoint, key_variable) {
     return (key_variable[datapoint]);
 }
 
-
 // create the leaflet map, centered in the center of cph
 var map = L.map('map').setView([55.675, 12.5561], 12);
 // add title layer to map
@@ -36,7 +35,9 @@ L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
     id: "giulioungaretti.k09mbfjd"
 }).addTo(map);
 
+// create support variable for mapping
 var geojsonLayer;
+
 // info box
 var info = L.control();
 info.onAdd = function(map) {
