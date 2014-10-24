@@ -1,20 +1,20 @@
 var RadarChart = {
   defaultConfig: {
     containerClass: 'radar-chart',
-    w: 600,
-    h: 600,
+    w: 150,
+    h: 150,
     factor: 0.95,
     factorLegend: 1,
-    levels: 3,
+    levels: 1,
     levelTick: false,
-    TickLength: 10,
+    TickLength: 5,
     maxValue: 0,
     radians: 2 * Math.PI,
-    color: d3.scale.category10(),
+    color: function() {},
     axisLine: true,
     axisText: true,
     circles: true,
-    radius: 5,
+    radius: 3,
     axisJoin: function(d, i) {
       return d.className || i;
     },
@@ -36,7 +36,7 @@ var RadarChart = {
           return datum;
         });
 
-        var maxValue = Math.max(cfg.maxValue, d3.max(data, function(d) { 
+        var maxValue = Math.max(cfg.maxValue, d3.max(data, function(d) {
           return d3.max(d.axes, function(o){ return o.value; });
         }));
 
