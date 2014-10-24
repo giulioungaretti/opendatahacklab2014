@@ -1,7 +1,5 @@
 RadarChart.defaultConfig.color = function() {};
-RadarChart.defaultConfig.radius = 3;
-RadarChart.defaultConfig.w = 400;
-RadarChart.defaultConfig.h = 400;
+
 // input
 var fuck_me = [5, 5, 0.2, 5, 5, 3, 4, 2, 4]
 
@@ -19,24 +17,24 @@ function wrapData(data) {
         }, {
             axis: "ages",
             value: data[2]
-        }, {
-            axis: "parking",
-            value: data[3]
-        }, {
-            axis: "male singles",
-            value: data[4]
-        }, {
-            axis: "female singles",
-            value: data[5]
-        }, {
-            axis: "digging",
-            value: data[6]
-        }, {
-            axis: "POI",
-            value: data[7]
-        }, {
-            axis: "free parking",
-            value: data[8]
+        // }, {
+        //     axis: "parking",
+        //     value: data[3]
+        // }, {
+        //     axis: "male singles",
+        //     value: data[4]
+        // }, {
+        //     axis: "female singles",
+        //     value: data[5]
+        // }, {
+        //     axis: "digging",
+        //     value: data[6]
+        // }, {
+        //     axis: "POI",
+        //     value: data[7]
+        // }, {
+        //     axis: "free parking",
+        //     value: data[8]
         }]
     }];
 
@@ -84,11 +82,14 @@ var data = [{
 }];
 
 
+
+
+
 // do the plotting
 var chart = RadarChart.chart();
-var svg = d3.select('body').append('svg')
-    .attr('width', 600)
-    .attr('height', 800);
+var svg = d3.select('#radar').append('svg')
+    .attr('width', 200)
+    .attr('height',200);
 
 var dat = wrapData(fuck_me)
 // draw one
