@@ -48,6 +48,11 @@ info.onAdd = function(map) {
 };
 info.addTo(map);
 
+// add legged
+var legend = L.control({
+    position: 'bottomright'
+});
+
 
 function drawMap(data, geojson, data_raw) {
 
@@ -67,16 +72,12 @@ function drawMap(data, geojson, data_raw) {
     };
 
 
-    // add legged
-    var legend = L.control({
-        position: 'bottomright'
-    });
 
     // prepare legend with  quantile
     var quantiles = color.quantiles();
 
     legend.onAdd = function(map) {
-        var div = L.DomUtil.create('div', 'info legend'),
+        var div = L.DomUtil.get('legend'),
             grades = [min];
         for (var i = 0; i < quantiles.length; i++) {
             grades.push(quantiles[i])
@@ -89,7 +90,7 @@ function drawMap(data, geojson, data_raw) {
             to = (grades[i + 1]);
             labels.push(
                 '<i style="background:' + color(from + 1) + '"></i> ' +
-                Math.exp(from).toFixed(0) + (Math.exp(to) ? '&ndash;' + Math.exp(to).toFixed(0) : '+'));
+                from.toFixed(0) + (to ? '&ndash;' + to.toFixed(0) : '+'));
         }
         div.innerHTML = labels.join('<br>');
         return div;
