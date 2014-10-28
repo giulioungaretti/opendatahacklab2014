@@ -23,12 +23,16 @@ html, body {
     color: #777;
       text-align: right;
 }
-.legend {
+
+#legend {
     text-align: left;
     line-height: 18px;
     color: #555;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 6px 8px;
+    border-radius: 4px;
 }
-.legend i {
+#legend i {
     width: 18px;
     height: 18px;
     float: left;
