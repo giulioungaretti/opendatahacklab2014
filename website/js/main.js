@@ -238,30 +238,49 @@ function radar(val1) {
 dataUrl = "./data/complete_dataset.json"
 
 function parse_data(data, weights) {
+	for (var index in names) {
+		var name = names[index];
+		stuff(index, name);
+	}
 	// TODO: separate data loading and aggregation.
 	var x = new Object();
 	var y = new Object();
+
+	// names of our data columns
+	var names = d3.keys(data[0]);
+
+	// finds max value for each data column
+	var maxes = new Object();
+
+	for (j in names) {
+		maxes[names[j]] = d3.max(data, function(d) {
+			return d[names[j]];
+		});
+	}
 	data.forEach(
 			function(d) {
 				x[d.id] = d3.values(d).slice(1, 4)
 				var temp = 1
 				for (var i = 0; i < x[d.id].length; i++) {
-					temp += parseFloat(x[d.id][i]) * parseFloat(weights[i])
+
+					//Weighting and normalization on the fly - still needs fix for ages
+					temp += parseFloat(x[d.id][i]) * parseFloat(weights[i]) / maxes[names[i + 1]]
+
+					//console.log(x[d.id][i],weights[i],maxes[names[i+1]])
 				};
-				y[d.id] = temp
-					// d.ages + d.cars  + d.bikes + d.digging  + d.poi + d.female_singles
+				y[d.id] = temp;
 
 			})
-		// returns raw data, aggregated data
-	return [x, y]
+		// returns raw, normalized and weighted aggregated data
+	return [x, y];
 }
 
-var weights = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+var weights = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 
-var names = ["#slider1", "#slider2", "#slider3", "#slider4", "#slider5"]
+var names = ["#slider1", "#slider2", "#slider3", "#slider4", "#slider5"];
 
 
-function stuff(index,name){
+function stuff(index, name) {
 	d3.select(name).call(d3.slider().on("slide", function(evt, value) {
 		weights[index] = value;
 		d3.json(dataUrl, function(error, data) {
@@ -285,5 +304,5 @@ function stuff(index,name){
 
 for (var index in names) {
 	var name = names[index];
-	stuff(index,name);
+	stuff(index, name);
 }
