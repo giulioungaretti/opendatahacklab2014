@@ -185,7 +185,7 @@ function wrapData(data) {
             value: parseFloat(data[1])
         }, {
             axis: "ages",
-            value: parseFloat(data[2])
+            value: parseFloat(data[2]) //Math.max(data[2]))
             // }, {
             //     axis: "parking",
             //     value: data[3]
@@ -232,6 +232,8 @@ function radar(val1) {
     } else {
         console.log('nans')
     }
+
+    console.log(wrapData(val1))
 }
 
 // define data path
@@ -276,7 +278,7 @@ var weights = [1, 1, 1] // , 1, 1, 1, 1, 1, 1, 1, 1]
 
 var names = ["#slider1"] // , "#slider1", "#slider1", "#slider1", "#slider1", "#slider1" ]
 
-d3.select('#slider1').call(d3.slider().min(-100).max(100).on("slide", function(evt, value) {
+d3.select('#slider1').call(d3.slider().min(-10).max(10).step(1).axis( d3.svg.axis().orient("bottom").ticks(3) ).on("slide", function(evt, value) {
     weights[0] = value
 
     d3.json(dataUrl, function(error, data) {
