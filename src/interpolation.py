@@ -49,19 +49,19 @@ def checkassigned(json_file, field_name, map_data):
 
         poly_counts.append(counts)
 
-    counts_new = interp(map_data,poly_counts,field_name)
+    # counts_new = interp(map_data,poly_counts,field_name)
 
-    kde_withkernels(poly_counts)
+    # kde_withkernels(poly_counts)
 
     plot(map_data['poly'], poly_counts)
     pyplot.savefig("interppre_disc"+str(field_name)+".pdf")
     pyplot.show()
 
-    pyplot.hist(poly_counts)
-    pyplot.show()
-    plot(map_data['poly'], counts_new)
-    pyplot.savefig("interpdone_disc_"+str(field_name)+".pdf")
-    pyplot.show()
+    # pyplot.hist(poly_counts)
+    # pyplot.show()
+    # plot(map_data['poly'], counts_new)
+    # pyplot.savefig("interpdone_disc_"+str(field_name)+".pdf")
+    # pyplot.show()
 
     return map_data
 
@@ -316,7 +316,8 @@ def plot(polys,counts):
     my_cmap.set_under('w')
 
     p = PatchCollection(patches, alpha=1.0,cmap=my_cmap)
-    p.set_clim(vmin=0.01)
+    # print patches
+    p.set_clim(vmin=20, vmax=73)
 
     p.set_array(colors)
     ax.add_collection(p)
@@ -327,7 +328,7 @@ def plot(polys,counts):
 
 map_data = createEmptyMapData()
 
-map_data1 = checkassigned('../data/trafiktal.json', 'cars', map_data)
+map_data1 = checkassigned('../data/average_age.json', 'ages', map_data)
 
 #map_data3 = checkassigned('../data/cykler.json', 'bikes', map_data)
 #map_data4 = checkassigned('../data/parkingdata.json', 'parking', map_data)
