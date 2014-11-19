@@ -201,6 +201,9 @@ function wrapData(data) {
 function radar(val1) {
 	// check if value exist, if it does then plot
 	// otherwise skip
+
+	labels = ['\uf1b9', '\uf206', '\uf1fd', '\uf1b9 \uf1b9 __ \uf1b9', '\uf183 \uf004', '\uf182 \uf004', '\uf19c']
+
 	if (typeof val1[0] != "undefined" &&
 		typeof val1[1] != "undefined" &&
 		typeof val1[2] != "undefined"
@@ -218,6 +221,7 @@ function radar(val1) {
 			.attr("height", cfg.h)
 			.datum(wrapData(val1))
 			.call(chart);
+		d3.select("#radar").selectAll('.axis').select('text').attr('font-family', 'FontAwesome').attr('font-size', function(d) { return 10} ).text(function(d,i) { return labels[i];})
 	} else {
 		console.log('nans');
 	}
