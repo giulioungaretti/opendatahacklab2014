@@ -229,10 +229,10 @@ function radar(val1) {
             .datum(wrapData(val1))
             .call(chart);
     } else {
-        console.log('nans')
+        //console.log('nans')
     }
 
-    console.log(wrapData(val1))
+    //console.log(wrapData(val1))
 }
 
 // define data path
@@ -258,30 +258,40 @@ function parse_data(data, weights) {
 			return d[names[j]];
 		});
 	}
+
 	data.forEach(
 			function(d) {
 				x[d.id] = d3.values(d).slice(1, 4)
 				var temp = 1
 				for (var i = 0; i < x[d.id].length; i++) {
 
-					//Weighting and normalization on the fly - still needs fix for ages
-					temp += parseFloat(x[d.id][i]) * parseFloat(weights[i]) / maxes[names[i + 1]]
+					//Weighting and normalization on the fly 
+                    if (i == 2){
+                    	// The score for the ages is returned a normalized gaussian of the form
+                    	// exp (- (( average age - own age )^2) / 2 C^2)
+                    	// Here C sets the fall off and is currently set at 10 years, twice the step size for the slider
+                        temp += Math.exp((-Math.pow(parseFloat(x[d.id][i]) - parseFloat(weights[i]),2)/(2*(Math.pow(10,2)))))*10
+                        
+                    }else{
+						temp += parseFloat(x[d.id][i]) * parseFloat(weights[i]) / maxes[names[i + 1]]
+                    };
 
-					//console.log(x[d.id][i],weights[i],maxes[names[i+1]])
-				};
+				}
 				y[d.id] = temp;
 
 			})
-		// returns raw, normalized and weighted aggregated data
+	// returns normalized and weighted aggregated data
 	return [x, y];
 }
 
 var weights = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 
-var names = ["#slider1", "#slider2", "#slider3", "#slider4", "#slider5"];
+//var weights = [0,0,0,0,0,0,0,0,0,0,0]
+
+var names = ["#cars", "#bikes", "#ages", "#parking", "#m_singles","#f_singles","#digging","#poi","#free_parking"];
 
 function stuff(index, name) {
-	d3.select(name).call(d3.slider().min(-10).max(10).step(1).axis( d3.svg.axis().orient("bottom").ticks(3) ).on("slide", function(evt, value) {
+	d3.select(name).call(d3.slider().value(0).min(-10).max(10).step(1).axis( d3.svg.axis().orient("bottom").ticks(3) ).on("slide", function(evt, value) {
 		weights[index] = value;
 		d3.json(dataUrl, function(error, data) {
 			if (error) {
@@ -302,8 +312,35 @@ function stuff(index, name) {
 	}));
 }
 
+function agenormal(index, name) {
+    d3.select(name).call(d3.slider().min(25).max(75).step(5).value(0).axis( d3.svg.axis().orient("bottom").ticks(3) ).on("slide", function(evt, value) {
+        weights[index] = value;
+        d3.json(dataUrl, function(error, data) {
+            if (error) {
+                console.log(error);
+            } else {
+                //get map
+                d3.json("./data/taxzone.json", function(mapData) {
+                    data = parse_data(data, weights);
+                    try {
+                        map.removeLayer(geojsonLayer);
+                    } catch (err) {
+                        console.log(err);
+                    }
+                    drawMap(data[1], mapData, data[0]);
+                })
+            }
+        });
+    }));
+}
+
+
 for (var index in names) {
 	var name = names[index];
-	stuff(index, name);
+    if (name != "#ages"){
+        stuff(index, name);
+    } else if (name == "#ages") {
+        agenormal(index, name);
+    }
 }
 
