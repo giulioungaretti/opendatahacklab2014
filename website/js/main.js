@@ -28,7 +28,6 @@ function matchMultiKey(datapoint, key_variable) {
 var map = L.map('map').setView([55.675, 12.5561], 12);
 // add title layer to map
 L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
-
 	maxZoom: 15,
 	// TODO: add proper attribution i.e mapbox, cph open data.
 	attribution: '',
@@ -38,16 +37,7 @@ L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
 // create support variable for mapping
 var geojsonLayer;
 
-// info box
-//var info = L.control();
-//info.onAdd = function(map) {
-	//// maybe create the div in advance ? with explanatory text ?
-	//this._div = L.DomUtil.get("caption-right")
-	////this._div.innerHTML = '';
-	//return this._div;
-//};
-//info.addTo(map);
-
+// simply select existing div
 var info = L.DomUtil.get("caption-right");
 
 
@@ -69,10 +59,10 @@ function drawMap(data, geojson, data_raw) {
 
 	// Checking to make sure colorscale is oriented correctly relative to the data - colorscale maps to abs(data)
 	if (min < 0 && max < 0) {
-		color.range().reverse()
+		color.range().reverse();
 	} else {
-		color.range()
-	};
+		color.range();
+	}
 
 
 	// prepare legend with  quantile
@@ -82,12 +72,12 @@ function drawMap(data, geojson, data_raw) {
 		var div = L.DomUtil.get('legend'),
 			grades = [min];
 		for (var i = 0; i < quantiles.length; i++) {
-			grades.push(quantiles[i])
-		};
+			grades.push(quantiles[i]);
+		}
 		var labels = [],
 			from,
 			to;
-		for (var i = 0; i < grades.length; i++) {
+		for (i = 0; i < grades.length; i++) {
 			from = (grades[i]);
 			to = (grades[i + 1]);
 			labels.push(
@@ -110,7 +100,7 @@ function drawMap(data, geojson, data_raw) {
 			fillOpacity: 0.7,
 			fillColor: color(matchKey(feature.properties.id, data))
 		};
-	};
+	}
 
 	// insert highlight
 	function highlightFeature(e) {
@@ -156,25 +146,27 @@ function drawMap(data, geojson, data_raw) {
 	}).addTo(map);
 
 	function update(props) {
-		if (props) {
-			//If value exists.
-			var val = matchKey(props.id, data);
-			// do your magic here Henri
-			var val_array = matchMultiKey(props.id, data_raw)
-			// do your magic here Henri
-			//val_array is an array of data indices (needs to be parseFloat before usage)
-		} else {
-			var val ="-" 
+			var val,
+				val_array;
+			if (props) {
+				//If value exists.
+				val = matchKey(props.id, data);
+				// do your magic here Henri
+				val_array = matchMultiKey(props.id, data_raw);
+				// do your magic here Henri
+				//val_array is an array of data indices (needs to be parseFloat before usage)
+			} else {
+				val = "-";
 				// the dimensionality must be unchanged
-			var val_array = [, , ]
+				val_array = [, , ];
+			}
+			info.innerHTML = '<b>' + val + (props ?
+				'</b> livability index in <b>' + props.rodenavn + '</b>.' : '<i> hover over a neighborhood </i>');
+			radar(val_array);
 		}
-		info.innerHTML = '<b>' + val  + (props ?
-			'</b> livability index in <b>' + props.rodenavn + '</b>.' : '<i> hover over a neighborhood </i>');
-		radar(val_array)
-	}
-	// d3 loading effect
+		// d3 loading effect
 	d3.select(".spinner").remove().transition().delay(100);
-};
+}
 
 function wrapData(data) {
 	var wrappeddata = [{
@@ -187,7 +179,7 @@ function wrapData(data) {
 			value: parseFloat(data[1])
 		}, {
 			axis: "ages",
-			value: parseFloat(data[2]) //Math.max(data[2]))
+			value: parseFloat(data[2])
 		}, {
 			axis: "parking",
 			value: parseFloat(data[3])
@@ -198,14 +190,8 @@ function wrapData(data) {
 			axis: "female singles",
 			value: parseFloat(data[5])
 		}, {
-			axis: "digging",
-			value: parseFloat(data[6])
-		}, {
 			axis: "POI",
 			value: parseFloat(data[7])
-				//}, {
-				//axis: "free parking",
-				//value: parseFloat(data[8])
 		}]
 	}];
 	return wrappeddata;
@@ -245,9 +231,9 @@ function parse_data(data, weights) {
 		stuff(index, name);
 	}
 	// TODO: separate data loading and aggregation.
-	var x = new Object();
-	var y = new Object();
-	var z = new Object();
+	var x = {};
+	var y = {};
+	var z = {};
 
 	// names of our data columns
 	var names = d3.keys(data[0]);
@@ -281,60 +267,88 @@ function parse_data(data, weights) {
 				}
 			}
 			y[d.id] = temp;
-			z[d.id] = temp2p
+			z[d.id] = temp2p;
 		});
 	// returns normalized and weighted aggregated data
 	return [z, y];
 }
 
-var weights = [1,1,1,1,1,1,1,1,1,1,1]
+var weights = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 
-var names = ["#cars", "#bikes", "#ages", "#parking", "#m_singles", "#f_singles", "#digging", "#poi", "#free_parking"];
+var names = ["#cars",
+	"#bikes",
+	"#ages",
+	"#parking",
+	"#m_singles",
+	"#f_singles",
+	"#digging",
+	"#poi",
+	"#free_parking"
+];
 
 function stuff(index, name) {
-	labels = ["-","0","+"]
-	d3.select(name).call(d3.slider().min(-10).max(10).step(2).value(0.0001).axis(d3.svg.axis().orient("bottom").ticks(3).tickFormat(function (d,i) {return labels[i]})).on("slide", function(evt, value) {
-		weights[index] = value;
-		d3.json(dataUrl, function(error, data) {
-			if (error) {
-				console.log(error);
-			} else {
-				//get map
-				d3.json("./data/taxzone.json", function(mapData) {
-					data = parse_data(data, weights);
-					try {
-						map.removeLayer(geojsonLayer);
-					} catch (err) {
-						console.log(err);
-					}
-					drawMap(data[1], mapData, data[0]);
-				});
-			}
-		});
-		d3.select(name+'textmin').text("--");
-	}));
+	var labels = ["-", "0", "+"];
+	d3.select(name).call(d3.slider()
+		.min(-10)
+		.max(10)
+		.step(2)
+		.value(0.0001)
+		.axis(d3.svg.axis()
+			.orient("bottom")
+			.ticks(3)
+			.tickFormat(function(d, i) {
+				return labels[i];
+			})).on("slide", function(evt, value) {
+			weights[index] = value;
+			d3.json(dataUrl, function(error, data) {
+				if (error) {
+					console.log(error);
+				} else {
+					//get map
+					d3.json("./data/taxzone.json", function(mapData) {
+						data = parse_data(data, weights);
+						try {
+							map.removeLayer(geojsonLayer);
+						} catch (err) {
+							console.log(err);
+						}
+						drawMap(data[1], mapData, data[0]);
+					});
+				}
+			});
+			d3.select(name + 'textmin').text("--");
+		}));
 }
 
 function agenormal(index, name) {
-	d3.select(name).call(d3.slider().min(25).max(75).step(5).value(50).axis(d3.svg.axis().orient("bottom").ticks(3)).on("slide", function(evt, value) {
-		weights[index] = value;
-		d3.json(dataUrl, function(error, data) {
-			if (error) {
-				console.log(error);
-			} else {
-				//get map
-				d3.json("./data/taxzone.json", function(mapData) {
-					data = parse_data(data, weights);
-					try {
-						map.removeLayer(geojsonLayer);
-					} catch (err) {
-						console.log(err);
+	d3.select(name)
+		.call(d3.slider()
+			.min(25)
+			.max(75)
+			.step(5)
+			.value(50)
+			.axis(d3.svg.axis()
+				.orient("bottom")
+				.ticks(3))
+			.on("slide", function(evt, value) {
+				weights[index] = value;
+				d3.json(dataUrl, function(error, data) {
+					if (error) {
+						console.log(error);
+					} else {
+						//get map
+						d3.json("./data/taxzone.json", function(mapData) {
+							data = parse_data(data, weights);
+							try {
+								map.removeLayer(geojsonLayer);
+							} catch (err) {
+								console.log(err);
+							}
+							drawMap(data[1], mapData, data[0]);
+						});
 					}
-					drawMap(data[1], mapData, data[0]);
 				});
-			}
-		});
-	}));
+			}));
 }
 
 
