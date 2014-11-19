@@ -294,7 +294,8 @@ var weights = [1,1,1,1,1,1,1,1,1,1,1]
 var names = ["#cars", "#bikes", "#ages", "#parking", "#m_singles", "#f_singles", "#digging", "#poi", "#free_parking"];
 
 function stuff(index, name) {
-	d3.select(name).call(d3.slider().value(0).min(-10).max(10).step(1).axis(d3.svg.axis().orient("bottom").ticks(3)).on("slide", function(evt, value) {
+	labels = ["-","0","+"]
+	d3.select(name).call(d3.slider().min(-10).max(10).step(2).value(0.0001).axis(d3.svg.axis().orient("bottom").ticks(3).tickFormat(function (d,i) {return labels[i]})).on("slide", function(evt, value) {
 		weights[index] = value;
 		d3.json(dataUrl, function(error, data) {
 			if (error) {
@@ -312,11 +313,12 @@ function stuff(index, name) {
 				});
 			}
 		});
+		d3.select(name+'textmin').text("--");
 	}));
 }
 
 function agenormal(index, name) {
-	d3.select(name).call(d3.slider().min(25).max(75).step(5).value(0).axis(d3.svg.axis().orient("bottom").ticks(3)).on("slide", function(evt, value) {
+	d3.select(name).call(d3.slider().min(25).max(75).step(5).value(50).axis(d3.svg.axis().orient("bottom").ticks(3)).on("slide", function(evt, value) {
 		weights[index] = value;
 		d3.json(dataUrl, function(error, data) {
 			if (error) {
