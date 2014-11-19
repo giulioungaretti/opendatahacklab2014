@@ -185,3 +185,11 @@ body {
 .radar-chart .d3-exit {
         opacity: 0;
 }
+
+
+#header{
+background: rgba(255, 255, 255, 0.8);
+border-bottom: 1px solid #eee;
+margin:1px;
+padding: 2px 2px 2px 2px;
+}

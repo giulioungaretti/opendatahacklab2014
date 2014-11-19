@@ -197,6 +197,7 @@ function wrapData(data) {
 	return wrappeddata;
 }
 
+//Could add static web with average values for CPH
 function radar(val1) {
 	// check if value exist, if it does then plot
 	// otherwise skip
