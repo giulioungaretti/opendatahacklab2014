@@ -39,14 +39,17 @@ L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
 var geojsonLayer;
 
 // info box
-var info = L.control();
-info.onAdd = function(map) {
-	// maybe create the div in advance ? with explanatory text ?
-	this._div = L.DomUtil.create('div', 'info');
-	this._div.innerHTML = '';
-	return this._div;
-};
-info.addTo(map);
+//var info = L.control();
+//info.onAdd = function(map) {
+	//// maybe create the div in advance ? with explanatory text ?
+	//this._div = L.DomUtil.get("caption-right")
+	////this._div.innerHTML = '';
+	//return this._div;
+//};
+//info.addTo(map);
+
+var info = L.DomUtil.get("caption-right");
+
 
 // add legged
 var legend = L.control({
@@ -124,12 +127,12 @@ function drawMap(data, geojson, data_raw) {
 			layer.bringToFront();
 		}
 		//  link target highlight and info redraw
-		info.update(layer.feature.properties);
+		update(layer.feature.properties);
 	}
 
 	function resetHighlight(e) {
 		geojsonLayer.resetStyle(e.target);
-		info.update();
+		update();
 	}
 
 	function zoomToFeature(e) {
@@ -152,26 +155,25 @@ function drawMap(data, geojson, data_raw) {
 		onEachFeature: onEachFeature
 	}).addTo(map);
 
-	info.update = function(props) {
+	function update(props) {
 		if (props) {
 			//If value exists.
 			var val = matchKey(props.id, data);
 			// do your magic here Henri
 			var val_array = matchMultiKey(props.id, data_raw)
-			console.log(val_array);
 			// do your magic here Henri
 			//val_array is an array of data indices (needs to be parseFloat before usage)
 		} else {
-			var val = 0
+			var val ="-" 
 				// the dimensionality must be unchanged
 			var val_array = [, , ]
 		}
-		this._div.innerHTML = '<b>' + val + '</b> unique views per post number in: ' + (props ?
-			'<b>' + props.rodenavn + '.' : 'Hover over a state');
+		info.innerHTML = '<b>' + val  + (props ?
+			'</b> livability index in <b>' + props.rodenavn + '</b>.' : '<i> hover over a neighborhood </i>');
 		radar(val_array)
-	};
+	}
 	// d3 loading effect
-	d3.select(".spinner").remove().transition().delay(100)
+	d3.select(".spinner").remove().transition().delay(100);
 };
 
 function wrapData(data) {
@@ -206,7 +208,7 @@ function wrapData(data) {
 				//value: parseFloat(data[8])
 		}]
 	}];
-	return wrappeddata
+	return wrappeddata;
 }
 
 function radar(val1) {
