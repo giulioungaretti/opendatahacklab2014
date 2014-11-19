@@ -278,7 +278,7 @@ function parse_data(data, weights) {
 	return [z, y];
 }
 
-var weights = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+var weights = [1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0];
 
 var names = ["#cars",
 	"#bikes",
