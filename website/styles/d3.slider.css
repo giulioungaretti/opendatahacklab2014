@@ -7,14 +7,14 @@
 }
 
 .d3-slider-horizontal {
-    height: .8em;
+    height: .0em;
 }
 
 .d3-slider-range {
   background:#2980b9;
   left:0px;
   right:0px;
-  height: 0.8em;
+  height: 0.2em;
   position: absolute;
 }
 
@@ -33,11 +33,10 @@
 
 .d3-slider-handle {
     position: absolute;
-    width: 1.2em;
-    height: 1.2em;
-    border: 1px solid #d3d3d3;
-    border-radius: 4px;
-    background: #eee;
+    width: 0.8em;
+    height: 0.8em;
+    border-radius: 50%;
+    background: #494949;
     z-index: 3;
 }
 
@@ -46,7 +45,7 @@
 }
 
 .d3-slider-horizontal .d3-slider-handle {
-    top: -.3em;
+    top: -.4em;
     margin-left: -.6em;
 }
 
@@ -56,7 +55,7 @@
 }
 
 .d3-slider-axis-bottom {
-    top: .8em;
+    top: .0em;
 }
 
 .d3-slider-axis-right {

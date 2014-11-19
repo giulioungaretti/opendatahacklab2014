@@ -72,7 +72,6 @@ function drawMap(data, geojson, data_raw) {
 	};
 
 
-
 	// prepare legend with  quantile
 	var quantiles = color.quantiles();
 
@@ -159,6 +158,8 @@ function drawMap(data, geojson, data_raw) {
 			var val = matchKey(props.id, data);
 			// do your magic here Henri
 			var val_array = matchMultiKey(props.id, data_raw)
+			console.log(val_array);
+				// do your magic here Henri
 				//val_array is an array of data indices (needs to be parseFloat before usage)
 		} else {
 			var val = 0
@@ -174,65 +175,63 @@ function drawMap(data, geojson, data_raw) {
 };
 
 function wrapData(data) {
-    var wrappeddata = [{
-        className: 'germany', // optional can be used for styling
-        axes: [{
-            axis: "cars",
-            value: parseFloat(data[0])
-        }, {
-            axis: "bikes",
-            value: parseFloat(data[1])
-        }, {
-            axis: "ages",
-            value: parseFloat(data[2]) //Math.max(data[2]))
-            // }, {
-            //     axis: "parking",
-            //     value: data[3]
-            // }, {
-            //     axis: "male singles",
-            //     value: data[4]
-            // }, {
-            //     axis: "female singles",
-            //     value: data[5]
-            // }, {
-            //     axis: "digging",
-            //     value: data[6]
-            // }, {
-            //     axis: "POI",
-            //     value: data[7]
-            // }, {
-            //     axis: "free parking",
-            //     value: data[8]
-        }]
-    }];
-    return wrappeddata
+	var wrappeddata = [{
+		className: 'germany', // optional can be used for styling
+		axes: [{
+			axis: "cars",
+			value: parseFloat(data[0])
+		}, {
+			axis: "bikes",
+			value: parseFloat(data[1])
+		}, {
+			axis: "ages",
+			value: parseFloat(data[2]) //Math.max(data[2]))
+		}, {
+			axis: "parking",
+			value: parseFloat(data[3])
+		}, {
+			axis: "male singles",
+			value: parseFloat(data[4])
+		}, {
+			axis: "female singles",
+			value: parseFloat(data[5])
+		}, {
+			axis: "digging",
+			value: parseFloat(data[6])
+		}, {
+			axis: "POI",
+			value: parseFloat(data[7])
+		//}, {
+			//axis: "free parking",
+			//value: parseFloat(data[8])
+		}]
+	}];
+	return wrappeddata
 }
 
 function radar(val1) {
-    // check if value exist, if it does then plot
-    // otherwise skip
-    if (typeof val1[0] != "undefined" &&
-        typeof val1[1] != "undefined" &&
-        typeof val1[2] != "undefined"
-    ) {
-        // initialize radar
-        var chart = RadarChart.chart();
-        // initialize config
-        var cfg = chart.config()
-        .w = 150
-        .h = 150;
-        d3.select("#radar").select('svg').remove();
-        d3.select("#radar")
-            .append("svg")
-            .attr("width", cfg.w)
-            .attr("height", cfg.h)
-            .datum(wrapData(val1))
-            .call(chart);
-    } else {
-        console.log('nans')
-    }
-
-    console.log(wrapData(val1))
+	// check if value exist, if it does then plot
+	// otherwise skip
+	if (typeof val1[0] != "undefined" &&
+		typeof val1[1] != "undefined" &&
+		typeof val1[2] != "undefined"
+	) {
+		// initialize radar
+		var chart = RadarChart.chart();
+		// initialize config
+		var cfg = chart.config()
+			.w = 150
+			.h = 150;
+		d3.select("#radar").select('svg').remove();
+		d3.select("#radar")
+			.append("svg")
+			.attr("width", cfg.w)
+			.attr("height", cfg.h)
+			.datum(wrapData(val1))
+			.call(chart);
+	} else {
+		console.log('nans')
+	}
 }
 
 // define data path
@@ -246,6 +245,7 @@ function parse_data(data, weights) {
 	// TODO: separate data loading and aggregation.
 	var x = new Object();
 	var y = new Object();
+	var z = new Object();
 
 	// names of our data columns
 	var names = d3.keys(data[0]);
@@ -259,29 +259,29 @@ function parse_data(data, weights) {
 		});
 	}
 	data.forEach(
-			function(d) {
-				x[d.id] = d3.values(d).slice(1, 4)
-				var temp = 1
-				for (var i = 0; i < x[d.id].length; i++) {
-
-					//Weighting and normalization on the fly - still needs fix for ages
-					temp += parseFloat(x[d.id][i]) * parseFloat(weights[i]) / maxes[names[i + 1]]
-
+		function(d) {
+			x[d.id] = d3.values(d).slice(1 );
+			var temp = 0;
+			var temp2p = [];
+			for (var i = 0; i < x[d.id].length; i++) {
+				//Weighting and normalization on the fly - still needs fix for ages
+				temp += parseFloat(x[d.id][i]) * parseFloat(weights[i]) / maxes[names[i + 1]]
 					//console.log(x[d.id][i],weights[i],maxes[names[i+1]])
-				};
-				y[d.id] = temp;
-
-			})
-		// returns raw, normalized and weighted aggregated data
-	return [x, y];
+				temp2p.push(parseFloat(x[d.id][i]) * parseFloat(weights[i]) / maxes[names[i + 1]]);
+			};
+			y[d.id] = temp;
+			z[d.id] = temp2p;
+		});
+	// returns raw, normalized and weighted aggregated data
+	return [z, y];
 }
 
 var weights = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 
-var names = ["#slider1", "#slider2", "#slider3", "#slider4", "#slider5"];
+var names = ["#slider1", "#slider2", "#slider3", "#slider4", "#slider5", "#slider6", "#slider7", "#slider8", "#slinder9"];
 
 function stuff(index, name) {
-	d3.select(name).call(d3.slider().min(-10).max(10).step(1).axis( d3.svg.axis().orient("bottom").ticks(3) ).on("slide", function(evt, value) {
+	d3.select(name).call(d3.slider().min(-10).max(10).step(1).axis(d3.svg.axis().orient("bottom").ticks(3)).on("slide", function(evt, value) {
 		weights[index] = value;
 		d3.json(dataUrl, function(error, data) {
 			if (error) {
@@ -296,7 +296,7 @@ function stuff(index, name) {
 						console.log(err);
 					}
 					drawMap(data[1], mapData, data[0]);
-				})
+				});
 			}
 		});
 	}));
@@ -306,4 +306,3 @@ for (var index in names) {
 	var name = names[index];
 	stuff(index, name);
 }
-
