@@ -287,12 +287,6 @@ function parse_data(data, weights) {
 	return [z, y];
 }
 
-//var weights = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
-
-//var names = ["#slider1", "#slider2", "#slider3", "#slider4", "#slider5", "#slider6", "#slider7", "#slider8", "#slinder9"];
-
-//function stuff(index, name) {
-//d3.select(name).call(d3.slider().min(-10).max(10).step(1).axis(d3.svg.axis().orient("bottom").ticks(3)).on("slide", function(evt, value) {
 var weights = [1,1,1,1,1,1,1,1,1,1,1]
 
 var names = ["#cars", "#bikes", "#ages", "#parking", "#m_singles", "#f_singles", "#digging", "#poi", "#free_parking"];
