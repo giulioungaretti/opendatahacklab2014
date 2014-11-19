@@ -232,12 +232,12 @@ function radar(val1) {
 			.datum(wrapData(val1))
 			.call(chart);
 	} else {
-		console.log('nans')
+		console.log('nans');
 	}
 }
 
 // define data path
-dataUrl = "./data/complete_dataset.json"
+dataUrl = "./data/complete_dataset.json";
 
 function parse_data(data, weights) {
 	for (var index in names) {
@@ -266,8 +266,9 @@ function parse_data(data, weights) {
 		function(d) {
 			x[d.id] = d3.values(d).slice(1);
 			var temp = 0;
+			var temp2p = [];
 			for (var i = 0; i < x[d.id].length; i++) {
-
+				temp2p.push(parseFloat(x[d.id][i]) * parseFloat(weights[i]) / maxes[names[i + 1]]);
 				//Weighting and normalization on the fly
 				if (i == 2) {
 					// The score for the ages is returned a normalized gaussian of the form
@@ -280,9 +281,10 @@ function parse_data(data, weights) {
 				}
 			}
 			y[d.id] = temp;
+			z[d.id] = temp2p
 		});
 	// returns normalized and weighted aggregated data
-	return [x, y];
+	return [z, y];
 }
 
 //var weights = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
