@@ -87,6 +87,9 @@ function drawMap(data, geojson, data_raw) {
 				'<i style="background:' + color(from + 1) + '"></i> ' +
 				from.toFixed(0) + (to ? '&ndash;' + to.toFixed(0) : '+'));
 		}
+
+		// I prefer positive values at the top!
+		labels.reverse()
 		div.innerHTML = labels.join('<br>');
 		return div;
 	};
