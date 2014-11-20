@@ -1,10 +1,10 @@
 var RadarChart = {
   defaultConfig: {
     containerClass: 'radar-chart',
-    w: 150,
+    w: 160,
     h: 150,
-    factor: 0.95,
-    factorLegend: 1,
+    factor: 0.7,
+    factorLegend: 0.9,
     levels: 1,
     levelTick: false,
     TickLength: 5,
@@ -157,7 +157,11 @@ var RadarChart = {
               })
               .attr('dy', function(d, i) {
                 var p = getVerticalPosition(i, 0.5);
-                return ((p < 0.1) ? '1em' : ((p > 0.9) ? '0' : '0.5em'));
+                return ((p < 0.1) ? '1em' : ((p > 0.9) ? '0' : '0.6em'));
+              })
+              .attr('dx', function(d, i) {
+                var p = getHorizontalPosition(i, 0.5);
+                return ((p < 0.1) ? '-.1em' : ((p > 0.9) ? '0.6em' : '0em'));
               })
               .text(function(d) { return d; })
               .attr('x', function(d, i){ return getHorizontalPosition(i, cfg.w / 2, cfg.factorLegend); })
