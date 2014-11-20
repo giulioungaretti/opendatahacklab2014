@@ -116,6 +116,12 @@ border-bottom: 1px solid #eee;
         font-weight: 200;
 }
 
+#radar-header{
+background: rgba(255, 255, 255, 0.8);
+border-bottom: 1px solid #eee;
+        font-weight: 200;
+}
+
 .sliders {
         padding: 1px 11px 21px 10px;
         background: rgba(255, 255, 255, 0.8);

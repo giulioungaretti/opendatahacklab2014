@@ -42,6 +42,8 @@ var geojsonLayer;
 // simply select existing div
 var info = L.DomUtil.get("caption-right");
 
+var radar_descriptor = L.DomUtil.get("radar-header");
+
 
 // add legged
 var legend = L.control({
@@ -174,6 +176,9 @@ function drawMap(data, geojson, data_raw) {
 			}
 			info.innerHTML = '<b>' + round_val + (props ?
 				'</b> livability index in <b>' + props.rodenavn + '</b>.' : '</b><i> hover over a neighborhood </i>');
+
+			radar_descriptor.innerHTML = (props ? 'Details for <b> <br>' + props.rodenavn + '</b>.'  : ' Hover over <br><b> a neighborhood </b>') ;
+
 			radar(val_array);
 		}
 		// d3 loading effect
@@ -239,7 +244,7 @@ function radar(val1) {
 			return labels[i];
 		})
 	} else {
-		console.log('nans');
+		//console.log('nans');
 	}
 }
 
@@ -269,6 +274,12 @@ function parse_data(data, weights) {
 		});
 	}
 
+	// returns normalized and weighted aggregated data
+	console.log(weights)
+
+	var total_weight = d3.sum(weights, function(d){ return Math.abs(d);}) + 1 - weights[2]; //subtract ages
+	console.log(total_weight)
+
 	data.forEach(
 		function(d) {
 			x[d.id] = d3.values(d).slice(1);
@@ -281,20 +292,20 @@ function parse_data(data, weights) {
 					// The score for the ages is returned a normalized gaussian of the form
 					// exp (- (( average age - own age )^2) / 2 C^2)
 					// Here C sets the fall off and is currently set at 10 years, twice the step size for the slider
-					temp += Math.exp((-Math.pow(parseFloat(x[d.id][i]) - parseFloat(weights[i]), 2) / (2 * (Math.pow(10, 2))))) * 10;
+					temp += Math.exp((-Math.pow(parseFloat(x[d.id][i]) - parseFloat(weights[i]), 2) / (2 * (Math.pow(10, 2))))) * 1;
 
 				} else {
-					temp += parseFloat(x[d.id][i]) * parseFloat(weights[i]) / maxes[names[i + 1]]
+					temp += parseFloat(x[d.id][i]) * parseFloat(weights[i]) / (maxes[names[i + 1]])
 				}
 			}
-			y[d.id] = temp;
+			y[d.id] = (temp / parseFloat(total_weight)) * 100; //Normalize by total weighting and score out of 100
 			z[d.id] = temp2p;
 		});
-	// returns normalized and weighted aggregated data
+
 	return [z, y];
 }
 
-var weights = [1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0];
+var weights = [0, 0, 25, 0, 0, 0, 0, 0, 0, 0, 0];
 
 var names = ["#cars",
 	"#bikes",
