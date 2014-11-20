@@ -259,7 +259,7 @@ function parse_data(data, weights) {
 			var temp = 0;
 			var temp2p = [];
 			for (var i = 0; i < x[d.id].length; i++) {
-				temp2p.push(parseFloat(x[d.id][i]) * parseFloat(weights[i]) / maxes[names[i + 1]]);
+				temp2p.push(parseFloat(x[d.id][i]) / maxes[names[i + 1]]);
 				//Weighting and normalization on the fly
 				if (i == 2) {
 					// The score for the ages is returned a normalized gaussian of the form
