@@ -8,20 +8,30 @@ body {
 #title_bar {
         font-family: "ff-bau-web", "Helvetica Neue", Helvetica, Arial, sans-serif;
 		vertical-align:middle;
+         background: #434343;
+         color: #FFFFFF;
+         font-size:4vw;
+         font-weight: 00;
+         text-align: center;
 }
-#title_bar h1 {
-        background: #78A15B;
-        color: #666;
-        color: #434343;
+.sub{
+        /*background: #78A15B;*/
+        /*background: #434343;*/
+        /*color: #666;R*/
+        /*color: #434343;*/
         -webkit-font-smoothing: antialiased;
         text-rendering: optimizeLegibility;
 		text-align:center;
         font-weight: 100;
-		font-size:5vw;
+		font-size:2vw;
         padding: 0 0 5 0;
         margin: 0px;
         height: 60%;
         width: 100%;
+}
+.your{
+color:#78A15B;
+font-weight: bold;
 }
 
 #caption{
@@ -31,6 +41,8 @@ body {
 		font-weight:200;
         margin: 0px;
         padding: 10px 10px 5px 5px;
+        font-size: 16px;
+
 }
 
 #caption-left{
@@ -53,7 +65,7 @@ body {
 }
 .info {
         padding: 6px 8px;
-        font: 14px/16px Arial, Helvetica, sans-serif;
+        font: 16px Arial, Helvetica, sans-serif;
         background: white;
         background: rgba(255, 255, 255, 0.8);
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
@@ -92,9 +104,7 @@ body {
 		height: 100%;
 		padding-top:10px;
 }
-.your{
-color:#434343;
-}
+
 
 .radar-chart {
         width: 100%;
