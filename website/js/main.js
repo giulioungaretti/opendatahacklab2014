@@ -156,12 +156,12 @@ function drawMap(data, geojson, data_raw) {
 				// do your magic here Henri
 				//val_array is an array of data indices (needs to be parseFloat before usage)
 			} else {
-				val = "-";
+				val = "";
 				// the dimensionality must be unchanged
 				val_array = [, , ];
 			}
 			info.innerHTML = '<b>' + val + (props ?
-				'</b> livability index in <b>' + props.rodenavn + '</b>.' : '<i> hover over a neighborhood </i>');
+				'</b> livability index in <b>' + props.rodenavn + '</b>.' : '</b><i> hover over a neighborhood </i>');
 			radar(val_array);
 		}
 		// d3 loading effect
