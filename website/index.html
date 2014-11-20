@@ -2,6 +2,23 @@
 <meta charset="UTF-8">
 
 <head>
+        <meta charset="utf-8" />
+        <meta name="description" content="livability index of the city of Copenhagen created using openly available datasets. The index is created by the user by setting his preferences with sliders.  " />
+        <meta name="keywords" content="Copenhagen index livability open data Aarhus Data Drinks" />
+
+
+        <!-- for Facebook -->
+        <meta property="og:title" content="Copenhagen livability index" />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="
+		http://www.giulioungaretti.me/opendatahacklab2014/website/index.html " />
+        <meta property="og:description" content="livability index of the city of Copenhagen created using openly available datasets. The index is created by the user by setting his preferences with sliders." />
+
+        <!-- for Twitter -->
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="Copenhagen livability index." />
+        <meta name="twitter:description" content="livability index of the city of Copenhagen created using openly available datasets. The index is created by the user by setting his preferences with sliders." />
+        <title> Copenhagen neighborhoods livability index.</title>
         <script src="./libraries/leaflet.js"></script>
         <script src="./libraries/queue.v1.min.js"></script>
         <script src="./libraries/d3.v3.min.js"></script>
@@ -19,11 +36,11 @@
         <div class="spinner"></div>
         <div id="title_bar">
                 <h1>
-						Copenhagen  neighborhood Livability index.
+						Copenhagen neighborhoods livability index.
 			   	</h1>
                 <div id='caption'>
                         <div id='caption-right'>
-                              Make it yours and ...  <i> hover over a neighborhood </i>
+                                Make it yours and ... <i> hover over a neighborhood </i>
                         </div>
                 </div>
 
@@ -33,6 +50,9 @@
         <div id='legend'></div>
         <div id="info-box">
                 <div id="radar">
+                        <div id='header'>
+                                Details for <b>this</b>.
+                        </div>
                 </div>
                 <div class="sliders">
                         <div id='header'>
