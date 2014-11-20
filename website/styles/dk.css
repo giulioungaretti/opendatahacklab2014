@@ -46,8 +46,8 @@ body {
 	text-align:center;
 }
 #map {
-        height: 90%;
-        width: 100%;
+        height: 90vh;
+        width: 100vw;
         padding: 0px;
         margin: 0px;
 }
@@ -88,9 +88,9 @@ body {
         left: 10px;
 }
 #radar{
-width: 100%;
-height: 100%;
-padding-top:10px;
+		width: 100%;
+		height: 100%;
+		padding-top:10px;
 }
 
 .radar-chart {
