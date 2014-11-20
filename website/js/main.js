@@ -155,12 +155,15 @@ function drawMap(data, geojson, data_raw) {
 				val_array = matchMultiKey(props.id, data_raw);
 				// do your magic here Henri
 				//val_array is an array of data indices (needs to be parseFloat before usage)
+
+				round_val = val.toFixed(2);
 			} else {
 				val = "";
+				round_val = "";
 				// the dimensionality must be unchanged
 				val_array = [, , ];
 			}
-			info.innerHTML = '<b>' + val.toFixed(2) + (props ?
+			info.innerHTML = '<b>' + round_val + (props ?
 				'</b> livability index in <b>' + props.rodenavn + '</b>.' : '</b><i> hover over a neighborhood </i>');
 			radar(val_array);
 		}
