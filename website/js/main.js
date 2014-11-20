@@ -202,7 +202,7 @@ function radar(val1) {
 	// check if value exist, if it does then plot
 	// otherwise skip
 
-	labels = ['\uf1b9', '\uf206', '\uf1fd', '\uf1b9 \uf1b9 __ \uf1b9', '\uf183 \uf004', '\uf182 \uf004', '\uf19c']
+	labels = ['\uf1b9', '\uf206', '\uf1fd', '\uf1b9 \uf1b9 __', '\uf183 \uf004', '\uf182 \uf004', '\uf19c']
 
 	if (typeof val1[0] != "undefined" &&
 		typeof val1[1] != "undefined" &&
