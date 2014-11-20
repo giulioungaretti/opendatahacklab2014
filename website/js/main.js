@@ -160,7 +160,7 @@ function drawMap(data, geojson, data_raw) {
 				// the dimensionality must be unchanged
 				val_array = [, , ];
 			}
-			info.innerHTML = '<b>' + val + (props ?
+			info.innerHTML = '<b>' + parseFloat(val).toFixed(2) + (props ?
 				'</b> livability index in <b>' + props.rodenavn + '</b>.' : '</b><i> hover over a neighborhood </i>');
 			radar(val_array);
 		}
