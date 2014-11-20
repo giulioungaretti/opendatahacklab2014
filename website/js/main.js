@@ -50,7 +50,7 @@ var legend = L.control({
 
 // move zoom buttons
 new L.Control.Zoom({ position: 'topright' }).addTo(map);
-function drawMap(data, geojson, data_raw) {
+function drawMap(data, geojson, data_raw, data_avg) {
 
 	// set domain of color maps
 	var min = d3.min(d3.values(data)),
@@ -171,7 +171,9 @@ function drawMap(data, geojson, data_raw) {
 			}
 			info.innerHTML = '<b>' + round_val + (props ?
 				'</b> livability index in <b>' + props.rodenavn + '</b>.' : '</b><i> hover over a neighborhood </i>');
-			radar(val_array);
+			//radar(val_array);
+			console.log(data_avg)
+			radar(data_avg);
 		}
 		// d3 loading effect
 	d3.select(".spinner").remove().transition().delay(100);
@@ -249,6 +251,8 @@ function parse_data(data, weights) {
 	var y = {};
 	var z = {};
 
+	var avg = [0, 0, 0, 0, 0, 0, 0];
+
 	// names of our data columns
 	var names = d3.keys(data[0]);
 
@@ -280,11 +284,26 @@ function parse_data(data, weights) {
 					temp += parseFloat(x[d.id][i]) * parseFloat(weights[i]) / maxes[names[i + 1]]
 				}
 			}
+			console.log("STOP")
 			y[d.id] = temp;
 			z[d.id] = temp2p;
+			var sum = [];
+			for(var i=0; i< avg.length; i++) {
+			    sum[i] = avg[i]+temp2p[i];
+			}
+			console.log(sum)
+			avg = sum
+
 		});
+
+	var fin = [];
+
+	for(var i=0; i< avg.length; i++) {
+		fin[i] = avg[i]/375.0;
+	}
+
 	// returns normalized and weighted aggregated data
-	return [z, y];
+	return [z, y, fin];
 }
 
 var weights = [1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0];
@@ -326,7 +345,7 @@ function stuff(index, name) {
 						} catch (err) {
 							console.log(err);
 						}
-						drawMap(data[1], mapData, data[0]);
+						drawMap(data[1], mapData, data[0], data[2]);
 					});
 				}
 			});
@@ -358,7 +377,7 @@ function agenormal(index, name) {
 							} catch (err) {
 								console.log(err);
 							}
-							drawMap(data[1], mapData, data[0]);
+							drawMap(data[1], mapData, data[0], data[2]);
 						});
 					}
 				});
