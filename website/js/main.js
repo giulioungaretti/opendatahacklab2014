@@ -25,8 +25,8 @@ function matchMultiKey(datapoint, key_variable) {
 }
 
 // create the leaflet map, centered in the center of cph
-var map = L.map('map',{
-  'zoomControl': false,
+var map = L.map('map', {
+	'zoomControl': false,
 }).setView([55.675, 12.5561], 12);
 // add title layer to map
 L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
@@ -49,7 +49,10 @@ var legend = L.control({
 });
 
 // move zoom buttons
-new L.Control.Zoom({ position: 'topright' }).addTo(map);
+new L.Control.Zoom({
+	position: 'topright'
+}).addTo(map);
+
 function drawMap(data, geojson, data_raw) {
 
 	// set domain of color maps
@@ -85,7 +88,7 @@ function drawMap(data, geojson, data_raw) {
 			to = (grades[i + 1]);
 			labels.push(
 				'<i style="background:' + color(from + 1) + '"></i> ' +
-				from.toFixed(0) + (to ? '&ndash;' + to.toFixed(0) : '+'));
+				from.toFixed(0) + (to ? '&ndash; ' + to.toFixed(0) : '+'));
 		}
 
 		// I prefer positive values at the top!
@@ -230,7 +233,11 @@ function radar(val1) {
 			.attr("height", cfg.h)
 			.datum(wrapData(val1))
 			.call(chart);
-		d3.select("#radar").selectAll('.axis').select('text').attr('font-family', 'FontAwesome').attr('font-size', function(d) { return 10} ).text(function(d,i) { return labels[i];})
+		d3.select("#radar").selectAll('.axis').select('text').attr('font-family', 'FontAwesome').attr('font-size', function(d) {
+			return 10
+		}).text(function(d, i) {
+			return labels[i];
+		})
 	} else {
 		console.log('nans');
 	}
