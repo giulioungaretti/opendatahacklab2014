@@ -25,7 +25,9 @@ function matchMultiKey(datapoint, key_variable) {
 }
 
 // create the leaflet map, centered in the center of cph
-var map = L.map('map').setView([55.675, 12.5561], 12);
+var map = L.map('map',{
+  'zoomControl': false,
+}).setView([55.675, 12.5561], 12);
 // add title layer to map
 L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
 	maxZoom: 15,
@@ -46,7 +48,8 @@ var legend = L.control({
 	position: 'bottomright'
 });
 
-
+// move zoom buttons
+new L.Control.Zoom({ position: 'topright' }).addTo(map);
 function drawMap(data, geojson, data_raw) {
 
 	// set domain of color maps
