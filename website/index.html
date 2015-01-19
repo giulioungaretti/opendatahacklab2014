@@ -2,77 +2,87 @@
 <meta charset="UTF-8">
 
 <head>
-        <meta charset="utf-8" />
-        <meta name="description" content="livability index of the city of Copenhagen created using openly available datasets. The index is created by the user by setting his preferences with sliders.  " />
-        <meta name="keywords" content="Copenhagen index livability open data Aarhus Data Drinks" />
+<meta charset="utf-8" />
+<meta name="description" content="livability index of the city of Copenhagen created using openly available datasets. The index is created by the user by setting his preferences with sliders.  " />
+<meta name="keywords" content="Copenhagen index livability open data Aarhus Data Drinks" />
 
 
-        <!-- for Facebook -->
-        <meta property="og:title" content="Copenhagen livability index" />
-        <meta property="og:type" content="article" />
-        <meta property="og:url" content="
-		http://www.giulioungaretti.me/opendatahacklab2014/website/index.html " />
-        <meta property="og:description" content="livability index of the city of Copenhagen created using openly available datasets. The index is created by the user by setting his preferences with sliders." />
+<!-- for Facebook -->
+<meta property="og:title" content="Copenhagen livability index" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="
+http://www.giulioungaretti.me/opendatahacklab2014/website/index.html " />
+<meta property="og:description" content="livability index of the city of Copenhagen created using openly available datasets. The index is created by the user by setting his preferences with sliders." />
 
-        <!-- for Twitter -->
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:title" content="Copenhagen livability index." />
-        <meta name="twitter:description" content="livability index of the city of Copenhagen created using openly available datasets. The index is created by the user by setting his preferences with sliders." />
-        <title> Copenhagen neighborhoods livability index.</title>
-        <script src="./libraries/leaflet.js"></script>
-        <script src="./libraries/queue.v1.min.js"></script>
-        <script src="./libraries/d3.v3.min.js"></script>
-        <script src='./libraries/d3.slider.js'></script>
-        <script src='./libraries/colorbrewer.js'></script>
-        <script src='./libraries/radar-chart.js'></script>
-        <link rel="stylesheet" href="./css/font-awesome.min.css">
-        <link rel="stylesheet" href="./styles/leaflet.css" />
-        <link rel="stylesheet" href="./styles/d3.slider.css" />
-        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="./styles/dk.css" />
+<!-- for Twitter -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Copenhagen livability index." />
+<meta name="twitter:description" content="livability index of the city of Copenhagen created using openly available datasets. The index is created by the user by setting his preferences with sliders." />
+<title> Copenhagen neighborhoods livability index.</title>
+<script src="./libraries/leaflet.js"></script>
+<script src="./libraries/queue.v1.min.js"></script>
+<script src="./libraries/d3.v3.min.js"></script>
+<script src='./libraries/d3.slider.js'></script>
+<script src='./libraries/colorbrewer.js'></script>
+<script src='./libraries/radar-chart.js'></script>
+<link rel="stylesheet" href="./css/font-awesome.min.css">
+<link rel="stylesheet" href="./styles/leaflet.css" />
+<link rel="stylesheet" href="./styles/d3.slider.css" />
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" href="./styles/dk.css" />
 </head>
 
 <body>
-        <div class="spinner"></div>
-        <div id="title_bar">
-	               <span class="your">your</span>CPH <span class="sub">Copenhagen livability index. </span>
-                <div id='caption'>
-                        <div id='caption-right'>
-                                Make it yours and ... <i> hover over a neighborhood </i>
-                        </div>
-                </div>
+<div class="spinner"></div>
+<div id="title_bar">
+		<span class="your">your</span>CPH <span class="sub">Copenhagen livability index. </span>
+		<div id='caption'>
+				<div id='caption-right'>
+						Make it yours and ... <i> hover over a neighborhood </i>
+				</div>
+		</div>
 
-        </div>
+</div>
 
-        <div id="map"></div>
-        <div id='legend'></div>
-        <div id="info-box">
-                <div id="radar">
-                        <div id='radar-header'>
-                              <!--   Hover over <br><b> a neighborhood </b> -->
-                        </div>
-                </div>
-                <div class="sliders">
-                        <div id='header'>
-                                Make it <b>yours</b>.
-                        </div>
-                        <h2><i class="fa fa-car"></i></h2>
-                        <div id="cars"></div>
-                        <h2><i class="fa fa-bicycle"></i></h2>
-                        <div id="bikes"></div>
-                        <h2><i class="fa fa-birthday-cake"></i></h2>
-                        <div id="ages"></div>
-                        <h2><i class="fa fa-car"></i> <i class="fa fa-car"></i> <i>__</i></h2>
-                        <div id="parking"></div>
-                        <h2><i class="fa fa-male"></i> <i class="fa fa-heart"></i></h2>
-                        <div id="m_singles"></div>
-                        <h2><i class="fa fa-female"></i> <i class="fa fa-heart"></i></h2>
-                        <div id="f_singles"></div>
-                        <h2><i class="fa fa-institution"></i></h2>
-                        <div id="poi"></div>
-                        <!--<h2>Free parking</h2>-->
-                        <!--<div id="free_parking"></div>-->
-                </div>
-        </div>
-        <script src="./js/main.js"></script>
+<div id="map"></div>
+<div id='legend'></div>
+<div id="info-box">
+		<div id="radar">
+				<div id='radar-header'>
+						<!--   Hover over <br><b> a neighborhood </b> -->
+				</div>
+		</div>
+		<div class="sliders">
+				<div id='header'>
+						Make it <b>yours</b>.
+				</div>
+				<h2><i class="fa fa-car"></i></h2>
+				<div id="cars"></div>
+				<h2><i class="fa fa-bicycle"></i></h2>
+				<div id="bikes"></div>
+				<h2><i class="fa fa-birthday-cake"></i></h2>
+				<div id="ages"></div>
+				<h2><i class="fa fa-car"></i> <i class="fa fa-car"></i> <i>__</i></h2>
+				<div id="parking"></div>
+				<h2><i class="fa fa-male"></i> <i class="fa fa-heart"></i></h2>
+				<div id="m_singles"></div>
+				<h2><i class="fa fa-female"></i> <i class="fa fa-heart"></i></h2>
+				<div id="f_singles"></div>
+				<h2><i class="fa fa-institution"></i></h2>
+				<div id="poi"></div>
+				<!--<h2>Free parking</h2>-->
+				<!--<div id="free_parking"></div>-->
+		</div>
+</div>
+<script src="./js/main.js"></script>
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+ })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-57021251-2', 'auto');
+ga('send', 'pageview');
+
+</script>
 </body>
